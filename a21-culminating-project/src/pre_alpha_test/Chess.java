@@ -1,9 +1,9 @@
-package pre_alpha_test;
-
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -15,12 +15,11 @@ public class Chess extends JFrame {
 	private JPanel contentPane;
 	
 	JPanel panel = new JPanel();
-	ImageIcon blackTile = new ImageIcon("assets/images/blackTile.png");
-	ImageIcon brownTile = new ImageIcon("assets/images/brownTile.png");
-	ImageIcon whiteTile = new ImageIcon("assets/images/whiteTile.png");
+	ImageIcon blackTile = new ImageIcon("images/blackTile.png");
+	ImageIcon brownTile = new ImageIcon("images/brownTile.png");
+	ImageIcon whiteTile = new ImageIcon("images/whiteTile.png");
 	final int BOARD_SIZE = 8;
 	JButton[][] board = new JButton[BOARD_SIZE][BOARD_SIZE];
-	int name = 0;
 	int tileNum = 0;
 	 
 	/**
@@ -52,27 +51,32 @@ public class Chess extends JFrame {
 		FlowLayout layout = new FlowLayout();
 		getContentPane().setLayout(layout);
 		
-		GridLayout layout1 = new GridLayout(BOARD_SIZE, BOARD_SIZE, 10, 10);
+		GridLayout layout1 = new GridLayout(BOARD_SIZE, BOARD_SIZE);
 		panel.setLayout(layout1);
 		
 		for (int row = 0; row < BOARD_SIZE; row++) {
 			for (int col = 0; col < BOARD_SIZE; col++) {
-				name++;
 				tileNum++;
 				
 				board[row][col] = new JButton((row+1) + " " + (col+1));
+				board[row][col].setMargin(new Insets(0,0,0,0));
 				
 				if (tileNum % 2 == 0) {
 					board[row][col].setIcon(brownTile);
+					board[row][col].setText("");
 				} else if (tileNum % 2 == 1) {
 					board[row][col].setIcon(whiteTile);
+					board[row][col].setText("");
 				} else {
 					board[row][col].setIcon(blackTile);
+					board[row][col].setText("");
 				}
 				
 				panel.add(board[row][col]);
 				// board[row][col].addActionListener(tictac); // change when new event handler class is made
 			}
+			
+			tileNum++;
 		}
 		
 		getContentPane().add(panel);

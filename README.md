@@ -3,7 +3,14 @@ A21 - Haevin Chess Game
 
 This is going to be the project folder where all the work will be completed. 
 Make sure to have the versions being worked on are being stored in their respective version types (alpha, beta, pre-release). 
-Please view the other READMEs listed throughout the project folder.
+
+Version Number Info:
+0.0.# --> Alpha
+0.#.# --> Beta
+1.0.0-preRelease## --> Pre-Release
+1.0.0 --> Release/Final
+
+Please view the other READMEs listed throughout the project folder!
 
 Whenever making a commit, make sure to explicitly state what is changed/added for clarity purposes. As well, within the code itself, there should be a "Patch Notes" 
 comment created. Use that comment field to state what was changed/created. State the line number if possible, as well as the date the change was made. Will allow for

@@ -15,6 +15,7 @@ public class Chess extends JFrame {
 	private JPanel contentPane;
 	
 	JPanel panel = new JPanel();
+	Control control;
 	ImageIcon blackTile = new ImageIcon("images/blackTile.png");
 	ImageIcon brownTile = new ImageIcon("images/brownTile.png");
 	ImageIcon whiteTile = new ImageIcon("images/whiteTile.png");
@@ -72,6 +73,7 @@ public class Chess extends JFrame {
 					board[row][col].setText("");
 				}
 				
+				board[row][col].addActionListener(control);
 				panel.add(board[row][col]);
 				// board[row][col].addActionListener(tictac); // change when new event handler class is made
 			}

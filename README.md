@@ -5,10 +5,10 @@ This is going to be the project folder where all the work will be completed.
 Make sure to have the versions being worked on are being stored in their respective version types (alpha, beta, pre-release). 
 
 Version Number Info:
-0.0.# --> Alpha
-0.#.# --> Beta
-1.0.0-preRelease## --> Pre-Release
-1.0.0 --> Release/Final
+- 0.0.# --> Alpha
+- 0.#.# --> Beta
+- 1.0.0-preRelease## --> Pre-Release
+- 1.0.0 --> Release/Final
 
 Please view the other READMEs listed throughout the project folder!
 

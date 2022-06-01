@@ -1,4 +1,4 @@
-# a21-culminating-project
+# Project Repository Information
 A21 - Haevin Chess Game
 
 This is going to be the project folder where all the work will be completed. 

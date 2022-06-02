@@ -18,9 +18,9 @@ public class Chess extends JFrame {
 	
 	JPanel panel = new JPanel();
 	Control control;
-	ImageIcon blackTile = new ImageIcon("images/blackTile.png");
-	ImageIcon brownTile = new ImageIcon("images/brownTile.png");
-	ImageIcon whiteTile = new ImageIcon("images/whiteTile.png");
+	ImageIcon blackTile = new ImageIcon("assets/images/blackTile.png");
+	ImageIcon brownTile = new ImageIcon("assets/images/brownTile.png");
+	ImageIcon whiteTile = new ImageIcon("assets/images/whiteTile.png");
 	final int BOARD_SIZE = 8;
 	JButton[][] board = new JButton[BOARD_SIZE][BOARD_SIZE];
 	int tileNum = 0;

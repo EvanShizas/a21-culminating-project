@@ -1,3 +1,5 @@
+# Folder Information [IMPORTANT]
+
 DO NOT CREATE ANY JAVA FILES IN THE DEFAULT PACKAGE! ONLY FINAL VERSION WILL BE PLACED HERE!
 
 To keep things organized, either create a new package for what is specifically being stored or place the Java file

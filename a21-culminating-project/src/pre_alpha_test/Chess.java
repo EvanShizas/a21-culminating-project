@@ -5,7 +5,6 @@ import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -18,9 +17,9 @@ public class Chess extends JFrame {
 	
 	JPanel panel = new JPanel();
 	Control control;
-	ImageIcon blackTile = new ImageIcon("assets/images/blackTile.png");
-	ImageIcon brownTile = new ImageIcon("assets/images/brownTile.png");
-	ImageIcon whiteTile = new ImageIcon("assets/images/whiteTile.png");
+	ImageIcon blackTile = new ImageIcon("assets/images/black-tile.png");
+	ImageIcon brownTile = new ImageIcon("assets/images/brown-tile.png");
+	ImageIcon whiteTile = new ImageIcon("assets/images/white-tile.png");
 	final int BOARD_SIZE = 8;
 	JButton[][] board = new JButton[BOARD_SIZE][BOARD_SIZE];
 	int tileNum = 0;

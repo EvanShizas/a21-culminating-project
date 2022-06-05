@@ -2,13 +2,20 @@
 A21 - Haevin Chess Game
 
 This is going to be the project folder where all the work will be completed. 
-Make sure to have the versions being worked on are being stored in their respective version types (alpha, beta, pre-release). 
+Make sure to have the versions being worked on stored in their respective version types (alpha, beta, pre-release), with any older versions being backed-up according to the rules listed in the package README.md! 
 
 Version Number Info:
 - 0.0.# --> Alpha
 - 0.#.# --> Beta
 - 1.0.0-preRelease## --> Pre-Release
 - 1.0.0 --> Release/Final
+
+Backup Information:
+- Create a folder containing the version number of the previous version (ex. 0.0.1)
+- Copy the Java Class file into the backup folder
+- Change the version number of the current Java Class file, following the numbering rules for its respective package 
+
+Present Java Class files will be listed in the root of the package...
 
 Please view the other READMEs listed throughout the project folder!
 

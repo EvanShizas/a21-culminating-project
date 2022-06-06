@@ -5,6 +5,9 @@ import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -21,6 +24,7 @@ public class Chess extends JFrame {
 	ImageIcon brownTile = new ImageIcon("assets/images/brown-tile.png");
 	ImageIcon whiteTile = new ImageIcon("assets/images/white-tile.png");
 	final int BOARD_SIZE = 8;
+	int[][] map = new int[BOARD_SIZE][BOARD_SIZE];
 	JButton[][] board = new JButton[BOARD_SIZE][BOARD_SIZE];
 	int tileNum = 0;
 	 
@@ -58,25 +62,36 @@ public class Chess extends JFrame {
 		
 		for (int row = 0; row < BOARD_SIZE; row++) {
 			for (int col = 0; col < BOARD_SIZE; col++) {
-				tileNum++;
-				
 				board[row][col] = new JButton((row+1) + " " + (col+1));
 				board[row][col].setMargin(new Insets(0,0,0,0));
 				
+				board[row][col].setText("");
+				map[row][col] = 0;
+				
+				board[row][col].addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						map[0][0] = 2;
+						board[0][0].setIcon(blackTile);
+						mapRead();
+					}
+				});
+				panel.add(board[row][col]);
+			}
+		}
+		
+		for (int row = 0; row < BOARD_SIZE; row++) {
+			for (int col = 0; col < BOARD_SIZE; col++) {
+				tileNum++;
+				
 				if (tileNum % 2 == 0) {
-					board[row][col].setIcon(brownTile);
-					board[row][col].setText("");
+					map[row][col] = 0;
 				} else if (tileNum % 2 == 1) {
-					board[row][col].setIcon(whiteTile);
-					board[row][col].setText("");
+					map[row][col] = 1;
 				} else {
-					board[row][col].setIcon(blackTile);
-					board[row][col].setText("");
+					map[row][col] = 2;
 				}
 				
-				board[row][col].addActionListener(control);
-				panel.add(board[row][col]);
-				// board[row][col].addActionListener(tictac); // change when new event handler class is made
+				mapRead();
 			}
 			
 			tileNum++;
@@ -84,6 +99,24 @@ public class Chess extends JFrame {
 		
 		getContentPane().add(panel);
 		setVisible(true);
+	}
+	
+	public void mapRead() {
+		for (int row = 0; row < BOARD_SIZE; row++) {
+			for (int col = 0; col < BOARD_SIZE; col++) {
+				switch (map[row][col]) {
+				case 0:
+					board[row][col].setIcon(brownTile);
+					break;
+				case 1:
+					board[row][col].setIcon(whiteTile);
+					break;
+				case 2:
+					board[row][col].setIcon(blackTile);
+					break;
+				}
+			}
+		}
 	}
 
 }

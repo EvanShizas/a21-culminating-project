@@ -1,6 +1,7 @@
 package pre_alpha_test;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -20,14 +21,25 @@ public class Chess extends JFrame {
 	
 	JPanel panel = new JPanel();
 	Control control;
-	ImageIcon blackTile = new ImageIcon("assets/images/black-tile.png");
-	ImageIcon brownTile = new ImageIcon("assets/images/brown-tile.png");
-	ImageIcon whiteTile = new ImageIcon("assets/images/white-tile.png");
+	ImageIcon whiteKing = new ImageIcon("assets/images/white-king.png");
+	ImageIcon whiteQueen = new ImageIcon("assets/images/white-queen.png");
+	ImageIcon whiteRook = new ImageIcon("assets/images/white-rook.png");
+	ImageIcon whiteKnight = new ImageIcon("assets/images/white-knight.png");
+	ImageIcon whiteBishop = new ImageIcon("assets/images/white-bishop.png");
+	ImageIcon whitePawn = new ImageIcon("assets/images/white-pawn.png");
+	ImageIcon blackKing = new ImageIcon("assets/images/black-king.png");
+	ImageIcon blackQueen = new ImageIcon("assets/images/black-queen.png");
+	ImageIcon blackRook = new ImageIcon("assets/images/black-rook.png");
+	ImageIcon blackKnight = new ImageIcon("assets/images/black-knight.png");
+	ImageIcon blackBishop = new ImageIcon("assets/images/black-bishop.png");
+	ImageIcon blackPawn = new ImageIcon("assets/images/black-pawn.png");
 	final int BOARD_SIZE = 8;
-	int[][] map = new int[BOARD_SIZE][BOARD_SIZE];
+	String[][] map = new String[BOARD_SIZE][BOARD_SIZE];
 	JButton[][] board = new JButton[BOARD_SIZE][BOARD_SIZE];
 	int tileNum = 0;
-	 
+	final Color BROWN = new Color(185, 122, 87);
+	final Color WHITE = new Color(255, 255, 255);
+	
 	/**
 	 * Launch the application.
 	 */
@@ -66,12 +78,10 @@ public class Chess extends JFrame {
 				board[row][col].setMargin(new Insets(0,0,0,0));
 				
 				board[row][col].setText("");
-				map[row][col] = 0;
+				map[row][col] = "  ";
 				
 				board[row][col].addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						map[0][0] = 2;
-						board[0][0].setIcon(blackTile);
 						mapRead();
 					}
 				});
@@ -84,39 +94,90 @@ public class Chess extends JFrame {
 				tileNum++;
 				
 				if (tileNum % 2 == 0) {
-					map[row][col] = 0;
+					board[row][col].setBackground(BROWN);
 				} else if (tileNum % 2 == 1) {
-					map[row][col] = 1;
-				} else {
-					map[row][col] = 2;
-				}
-				
-				mapRead();
+					board[row][col].setBackground(WHITE);
+				} 
 			}
 			
 			tileNum++;
 		}
+
+		for (int col = 0; col < BOARD_SIZE; col++) {
+			map[6][col] = "wP";
+			map[1][col] = "bP";
+		}
+		map[7][0] = "wR";
+		map[7][1] = "wN";
+		map[7][2] = "wB";
+		map[7][3] = "wQ";
+		map[7][4] = "wK";
+		map[7][5] = "wB";
+		map[7][6] = "wN";
+		map[7][7] = "wR";
+		map[0][0] = "bR";
+		map[0][1] = "bN";
+		map[0][2] = "bB";
+		map[0][3] = "bQ";
+		map[0][4] = "bK";
+		map[0][5] = "bB";
+		map[0][6] = "bN";
+		map[0][7] = "bR";
+		mapRead();
 		
 		getContentPane().add(panel);
 		setVisible(true);
 	}
 	
 	public void mapRead() {
+		ImageIcon icon = new ImageIcon();
+		
 		for (int row = 0; row < BOARD_SIZE; row++) {
 			for (int col = 0; col < BOARD_SIZE; col++) {
 				switch (map[row][col]) {
-				case 0:
-					board[row][col].setIcon(brownTile);
+				case "wK":
+					icon = whiteKing;
 					break;
-				case 1:
-					board[row][col].setIcon(whiteTile);
+				case "wQ":
+					icon = whiteQueen;
 					break;
-				case 2:
-					board[row][col].setIcon(blackTile);
+				case "wR":
+					icon = whiteRook;
+					break;
+				case "wN":
+					icon = whiteKnight;
+					break;
+				case "wB":
+					icon = whiteBishop;
+					break;
+				case "wP":
+					icon = whitePawn;
+					break;
+				case "bK":
+					icon = blackKing;
+					break;
+				case "bQ":
+					icon = blackQueen;
+					break;
+				case "bR":
+					icon = blackRook;
+					break;
+				case "bN":
+					icon = blackKnight;
+					break;
+				case "bB":
+					icon = blackBishop;
+					break;
+				case "bP":
+					icon = blackPawn;
 					break;
 				}
+				board[row][col].setIcon(icon);
+				System.out.print(map[row][col]);
 			}
+			System.out.println();
 		}
+		System.out.println();
 	}
 
 }

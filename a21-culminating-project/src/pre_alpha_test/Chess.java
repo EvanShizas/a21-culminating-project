@@ -84,12 +84,12 @@ public class Chess extends JFrame {
 				board[row][col].addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						int pos = Integer.parseInt(e.getActionCommand());
-						int x = pos % 8;
-						int y = pos / 8;
+						// uses index based on 0-7 for array
+						int posRow = pos / 8;
+						int posCol = pos % 8;
 						
-						System.out.println("Position: " + pos);
-						System.out.println("X: " + x);
-						System.out.println("Y: " + y);
+						System.out.println("Row of button: " + posRow);
+						System.out.println("Col of button: " + posCol);
 						
 						// piece movement can go here using x,y position of clicked button
 						

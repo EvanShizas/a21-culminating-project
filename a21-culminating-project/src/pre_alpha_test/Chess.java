@@ -193,16 +193,21 @@ public class Chess extends JFrame {
 		}
 		System.out.println();
 	}
-	
+	boolean checkRook = false;
 	public void moveChecker(int posRow, int posCol) {
 		if (map[posRow][posCol] == "wR" || map[posRow][posCol] == "bR") {
 			for (int i = 0; i < BOARD_SIZE; i++) {
-				if (map[i][posCol] == "eE") {
-					board[i][posCol].setEnabled(true);
-					int check = i;
+				if (map[i][posCol] != "eE") {
+					board[i][posCol].setEnabled(false);
+					if(checkRook == false) {
+						int check = i;
+						for(int y = check; y < BOARD_SIZE; y++) {
+							board[y][posCol].setEnabled(false);
+						}
+					}
 				}
 				else {
-					board[i][posCol].setEnabled(false);
+					//board[i][posCol].setEnabled(true);
 				}
 				
 				if (map[posRow][i] == "eE") {

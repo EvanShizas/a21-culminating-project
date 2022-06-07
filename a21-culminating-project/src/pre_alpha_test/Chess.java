@@ -37,6 +37,7 @@ public class Chess extends JFrame {
 	String[][] map = new String[BOARD_SIZE][BOARD_SIZE];
 	JButton[][] board = new JButton[BOARD_SIZE][BOARD_SIZE];
 	int tileNum = 0;
+	int name = 0;
 	final Color BROWN = new Color(185, 122, 87);
 	final Color WHITE = new Color(255, 255, 255);
 	
@@ -77,15 +78,27 @@ public class Chess extends JFrame {
 				board[row][col] = new JButton((row+1) + " " + (col+1));
 				board[row][col].setMargin(new Insets(0,0,0,0));
 				
-				board[row][col].setText("");
+				board[row][col].setText(Integer.toString(name));
 				map[row][col] = "  ";
 				
 				board[row][col].addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+						int pos = Integer.parseInt(e.getActionCommand());
+						int x = pos % 8;
+						int y = pos / 8;
+						
+						System.out.println("Position: " + pos);
+						System.out.println("X: " + x);
+						System.out.println("Y: " + y);
+						
+						// piece movement can go here using x,y position of clicked button
+						
 						mapRead();
 					}
 				});
 				panel.add(board[row][col]);
+				
+				name++;
 			}
 		}
 		

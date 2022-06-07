@@ -79,7 +79,7 @@ public class Chess extends JFrame {
 				board[row][col].setMargin(new Insets(0,0,0,0));
 				
 				board[row][col].setText(Integer.toString(name));
-				map[row][col] = "  ";
+				map[row][col] = "eE";
 				
 				board[row][col].addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
@@ -92,6 +92,7 @@ public class Chess extends JFrame {
 						System.out.println("Col of button: " + posCol);
 						
 						// piece movement can go here using x,y position of clicked button
+						moveChecker(posRow, posCol);
 						
 						mapRead();
 					}
@@ -191,6 +192,27 @@ public class Chess extends JFrame {
 			System.out.println();
 		}
 		System.out.println();
+	}
+	
+	public void moveChecker(int posRow, int posCol) {
+		if (map[posRow][posCol] == "wR" || map[posRow][posCol] == "bR") {
+			for (int i = 0; i < BOARD_SIZE; i++) {
+				if (map[i][posCol] == "eE") {
+					board[i][posCol].setEnabled(true);
+					int check = i;
+				}
+				else {
+					board[i][posCol].setEnabled(false);
+				}
+				
+				if (map[posRow][i] == "eE") {
+					board[posRow][i].setEnabled(true);
+				}
+				else {
+					board[posRow][i].setEnabled(false);
+				}
+			}
+		}
 	}
 
 }

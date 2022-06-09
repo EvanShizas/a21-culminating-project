@@ -16,11 +16,12 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 public class Chess extends JFrame {
-
 	private JPanel contentPane;
-	
 	JPanel panel = new JPanel();
+	
 	Control control;
+	
+	ImageIcon placeholder = new ImageIcon("assets/images/transparent-tile.png");
 	ImageIcon whiteKing = new ImageIcon("assets/images/white-king.png");
 	ImageIcon whiteQueen = new ImageIcon("assets/images/white-queen.png");
 	ImageIcon whiteRook = new ImageIcon("assets/images/white-rook.png");
@@ -33,11 +34,13 @@ public class Chess extends JFrame {
 	ImageIcon blackKnight = new ImageIcon("assets/images/black-knight.png");
 	ImageIcon blackBishop = new ImageIcon("assets/images/black-bishop.png");
 	ImageIcon blackPawn = new ImageIcon("assets/images/black-pawn.png");
+	
 	final int BOARD_SIZE = 8;
 	String[][] map = new String[BOARD_SIZE][BOARD_SIZE];
 	JButton[][] board = new JButton[BOARD_SIZE][BOARD_SIZE];
 	int tileNum = 0;
 	int name = 0;
+	
 	final Color BROWN = new Color(185, 122, 87);
 	final Color WHITE = new Color(255, 255, 255);
 	
@@ -117,18 +120,19 @@ public class Chess extends JFrame {
 			tileNum++;
 		}
 
+		// setting the pieces on the board
 		for (int col = 0; col < BOARD_SIZE; col++) {
 			map[6][col] = "wP";
 			map[1][col] = "bP";
 		}
-		map[7][0] = "wR";
+		map[2][5] = "wR";
 		map[7][1] = "wN";
-		map[7][2] = "wB";
+		map[4][3] = "wB";
 		map[7][3] = "wQ";
 		map[7][4] = "wK";
-		map[7][5] = "wB";
-		map[7][6] = "wN";
-		map[7][7] = "wR";
+		map[3][1] = "wB";
+		//map[7][6] = "wN";
+		map[3][3] = "wR";
 		map[0][0] = "bR";
 		map[0][1] = "bN";
 		map[0][2] = "bB";
@@ -185,38 +189,72 @@ public class Chess extends JFrame {
 				case "bP":
 					icon = blackPawn;
 					break;
+				default:
+					icon = placeholder;
 				}
 				board[row][col].setIcon(icon);
-				System.out.print(map[row][col]);
+				System.out.print(map[row][col] + " ");
 			}
 			System.out.println();
 		}
 		System.out.println();
 	}
 	boolean checkRook = false;
+	boolean blocked = false;
+	boolean downCheck = false;
+	boolean upCheck = false;
 	public void moveChecker(int posRow, int posCol) {
-		if (map[posRow][posCol] == "wR" || map[posRow][posCol] == "bR") {
-			for (int i = 0; i < BOARD_SIZE; i++) {
-				if (map[i][posCol] != "eE") {
+		switch (map[posRow][posCol]) {
+		case "wR": case "bR":
+			// todo: if clicked again then deselect rook
+			
+			// rook down check
+			for (int i = posRow+1; i < BOARD_SIZE; i++) {
+				if (map[i][posCol] != "eE" || downCheck != false) {
 					board[i][posCol].setEnabled(false);
-					if(checkRook == false) {
-						int check = i;
-						for(int y = check; y < BOARD_SIZE; y++) {
-							board[y][posCol].setEnabled(false);
-						}
-					}
+					downCheck = true;
+				}	 
+			}
+			
+			// rook up check (caveman check)
+			/*for (int i = posRow-1; i < (BOARD_SIZE-posRow); i--) {
+				if (map[i][posCol] != "eE" || upCheck != false) {
+					board[i][posCol].setEnabled(false);
+					upCheck = true;
 				}
-				else {
-					//board[i][posCol].setEnabled(true);
+				if (i <= 0) {
+					break;
 				}
-				
-				if (map[posRow][i] == "eE") {
-					board[posRow][i].setEnabled(true);
-				}
-				else {
-					board[posRow][i].setEnabled(false);
+			}*/
+			
+			// rook up check
+			for (int i = 0; i < posRow; i++) {
+				if (map[i][posCol] != "eE" || upCheck != false) {
+					board[i][posCol].setEnabled(false);
+					upCheck = true;
 				}
 			}
+			
+			// todo: add horizontal rook checks
+
+			// todo: add legal moves to a list and disable others
+			
+			break;
+		case "wB": case "bB":
+			
+			break;
+		case "wN": case "bN":
+			
+			break;
+		case "wQ": case "bQ":
+			
+			break;
+		case "wP": case "bP":
+			
+			break;
+		case "wK": case "bK":
+			
+			break;
 		}
 	}
 

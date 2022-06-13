@@ -4,14 +4,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
-public class Control extends Chess implements ActionListener {
+public class Control implements ActionListener {
 	Chess gui;
+	
 	final int BOARD_SIZE = gui.BOARD_SIZE;
+	JButton[][] board = gui.board;
+	ImageIcon highlightedBrownTile = new ImageIcon("assets/images/highlighted-brown-tile.png");
 	
 	public void actionPerformed(ActionEvent e) {
-		gui.map[0][0] = 2;
-		gui.board[0][0].setIcon(gui.blackTile);
-		gui.mapRead();
+		board[0][0].setIcon(highlightedBrownTile);
 	}
+	
 }
-

@@ -1,4 +1,4 @@
-package alpha_versions;
+package beta_versions;
 
 /**
  * Haevin Chess. A game of Chess with a twist!
@@ -9,7 +9,7 @@ package alpha_versions;
  * @author      Alvin Chan
  * @author      Hammad Hassan
  * @author      Evan Shizas
- * @version     0.0.4
+ * @version     0.1.0
  * @see         A21 - Culminating Project
  */
 
@@ -86,7 +86,7 @@ public class HaevinChess extends JFrame {
 
 	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
-	final String VERSION = "v0.0.4";
+	final String VERSION = "v0.1.0 - (beta)";
 	final int BOARD_SIZE = 8, WIDTH = (int)screenSize.getWidth(), HEIGHT = (int)screenSize.getHeight();
 	final Color BROWN = new Color(185, 122, 87), WHITE = new Color(255, 255, 255);
 
@@ -141,10 +141,10 @@ public class HaevinChess extends JFrame {
 		});
 	}
 
-	public HaevinChess() {
+	public HaevinChess() { // Constructors
 		setResizable(false);
 		setBackground(Color.WHITE);
-		setTitle("A21 - Haevin Chess (" + VERSION + ")");
+		setTitle("A21 - Haevin Chess [" + VERSION + "]");
 		setIconImage(winIcon.getImage()); 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 600, 700);
@@ -220,7 +220,7 @@ public class HaevinChess extends JFrame {
 			}
 		});
 
-		version = new JLabel(VERSION + " - (alpha)");
+		version = new JLabel(VERSION);
 		version.setBackground(Color.WHITE);
 		version.setFont(new Font("Tahoma", Font.ITALIC, 9));
 		version.setBounds(10, 640, 84, 14);
@@ -329,7 +329,7 @@ public class HaevinChess extends JFrame {
 	}
 
 	public void singlePlayerActionPerformed(java.awt.event.ActionEvent evt) {
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
+		setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximizes screen.
 
 		contentPane.remove(select);
 		contentPane.remove(settings);
@@ -344,7 +344,7 @@ public class HaevinChess extends JFrame {
 	}
 
 	public void multiPlayerActionPerformed(java.awt.event.ActionEvent evt) {
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
+		setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximizes screen.
 
 		contentPane.remove(select);
 		contentPane.remove(settings);
@@ -358,7 +358,7 @@ public class HaevinChess extends JFrame {
 		gameBoardInit();
 	}
 
-	public void gameBoardInit() {
+	public void gameBoardInit() { // Game Board Initializer. Contains board ActionListener!
 		setBounds(10, 10, 1475, 750);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -398,7 +398,7 @@ public class HaevinChess extends JFrame {
 			for (int col = 0; col < BOARD_SIZE; col++) {
 				chessBoard[row][col] = new JButton();
 
-				chessBoard[row][col].addActionListener(new ActionListener() {
+				chessBoard[row][col].addActionListener(new ActionListener() { // Board ActionListener...
 					public void actionPerformed(ActionEvent e) {
 						for (int row = 0; row < BOARD_SIZE; row++) {
 							for (int col = 0; col < BOARD_SIZE; col++) {
@@ -448,6 +448,7 @@ public class HaevinChess extends JFrame {
 			tileNum++;
 		}
 
+		// Piece placement loop...
 		for (int i = 0; i < BOARD_SIZE; i++) {
 			for (int j = 0; j < BOARD_SIZE; j++) {
 				if (i == 0) {
@@ -594,8 +595,8 @@ public class HaevinChess extends JFrame {
 		}
 	}
 
-	public void gameAction() {
-		if (!secondPlayer && !kingCheck) {
+	public void gameAction() { // When board button is pressed...
+		if (!secondPlayer && !kingCheck) { // First player
 			switch (chessBoardMap[posX][posY]) {
 			case "wK":
 				kingRuleSet();
@@ -618,7 +619,7 @@ public class HaevinChess extends JFrame {
 			}
 		}
 
-		else if (!kingCheck) {
+		else if (!kingCheck) { // Second player
 			switch (chessBoardMap[posX][posY]) {
 			case "bK":
 				kingRuleSet();
@@ -641,7 +642,7 @@ public class HaevinChess extends JFrame {
 			}
 		}
 
-		else {
+		else { // If king is in check
 			if (!secondPlayer) {
 				switch (chessBoardMap[posX][posY]) {
 				case "bK":
@@ -659,10 +660,10 @@ public class HaevinChess extends JFrame {
 			}
 		}
 
-		if (secondClick) {
+		if (secondClick) { // Done when a piece is already selected and is to be moved...
 			chessBoardMap[posX][posY] = pieceStore;
 
-			if (castling) {
+			if (castling) { // Castling-specific rule...
 				if (posY < 5) {
 					if (!secondPlayer) {
 						chessBoardMap[pieceStoreX][pieceStoreY - 1] = "wR";
@@ -690,6 +691,7 @@ public class HaevinChess extends JFrame {
 				castling = false;
 			}
 
+			// Makes empty spot where piece used to be...
 			chessBoardMap[pieceStoreX][pieceStoreY] = "eE";
 
 			if (secondPlayer) {
@@ -1239,7 +1241,7 @@ public class HaevinChess extends JFrame {
 		checkKingScanner();
 	}
 
-	public void selectReset() {
+	public void selectReset() { // Resets any highlighted spots which were available to be selected from for specific piece chosen...
 		for (int i = 0; i < BOARD_SIZE; i++) {
 			for (int j = 0; j < BOARD_SIZE; j++) {
 				if (chessBoardMap[i][j].contains("sR")) {

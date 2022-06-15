@@ -718,6 +718,50 @@ public class HaevinChess extends JFrame {
 	public void checkGameScanner() {
 		// TODO -> have entire board scanned to see if a move has placed the king in check...
 		// force kingCheck to be true, forcing the only thing to be moved being the king...
+		
+		for (int i = 0; i < BOARD_SIZE; i++) {
+			for (int j = 0; j < BOARD_SIZE; j++) {
+				if (chessBoardMap[i][j].contains("P")) {
+					kingCheck = pawnCheck();
+					
+					if (kingCheck) {
+						break;
+					}
+				}
+				
+				if (chessBoardMap[i][j].contains("R")) {
+					kingCheck = rookCheck();
+					
+					if (kingCheck) {
+						break;
+					}
+				}
+				
+				if (chessBoardMap[i][j].contains("N")) {
+					kingCheck = knightCheck();
+					
+					if (kingCheck) {
+						break;
+					}
+				}
+				
+				if (chessBoardMap[i][j].contains("B")) {
+					kingCheck = bishopCheck();
+					
+					if (kingCheck) {
+						break;
+					}
+				}
+				
+				if (chessBoardMap[i][j].contains("Q")) {
+					kingCheck = queenCheck();
+					
+					if (kingCheck) {
+						break;
+					}
+				}
+			}
+		}
 	}
 
 	public void pawnRuleSet() {
@@ -779,6 +823,54 @@ public class HaevinChess extends JFrame {
 		pieceStoreX = posX;
 		pieceStoreY = posY;
 		pieceStore = chessBoardMap[posX][posY];
+	}
+	
+	public boolean pawnCheck() {
+		if (chessBoardMap[posX][posY].equals("wP")) {
+			if (posY != BOARD_SIZE - 1) {
+				if (chessBoardMap[posX - 1][posY + 1].contains("bK")) {
+					return true;
+				}
+			}
+
+			if (posY != 0) {
+				if (chessBoardMap[posX - 1][posY - 1].contains("bK")) {
+					return true;
+				}
+			}
+		}
+		
+		else {
+			if (posY != BOARD_SIZE - 1) {
+				if (chessBoardMap[posX + 1][posY + 1].contains("wK")) {
+					return true;
+				}
+			}
+
+			if (posY != 0) {
+				if (chessBoardMap[posX + 1][posY - 1].contains("wK")) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+	
+	public boolean rookCheck() {
+		return false;
+	}
+	
+	public boolean knightCheck() {
+		return false;
+	}
+	
+	public boolean bishopCheck() {
+		return false;
+	}
+	
+	public boolean queenCheck() {
+		return false;
 	}
 
 	public void rookRuleSet() {

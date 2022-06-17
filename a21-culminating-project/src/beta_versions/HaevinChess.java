@@ -92,7 +92,7 @@ public class HaevinChess extends JFrame {
 
 	int tileNum = 0, name = 0, posX, posY, pieceStoreX = 0, pieceStoreY = 0;
 	double change = (double)((WIDTH-HEIGHT)/2);
-	boolean checkMate = false, kingCheck = false, castling = false, secondClick = false, secondPlayer = false;
+	boolean pieceBlockCheckSelect = false, checkMate = false, kingCheck = false, castling = false, castlingDoneP1 = false, castlingDoneP2 = false, secondClick = false, secondPlayer = false;
 
 	String pieceStore = "", charTurnContain = "";
 
@@ -506,89 +506,84 @@ public class HaevinChess extends JFrame {
 		ImageIcon icon = new ImageIcon();
 
 		for (int row = 0; row < BOARD_SIZE; row++) {
-			for (int col = 0; col < BOARD_SIZE; col++) {
-				switch (chessBoardMap[row][col]) {
-				case "wK":
+			for (int col = 0; col < BOARD_SIZE; col++) {				
+				if (chessBoardMap[row][col].contains("wK"))
 					icon = whiteKing;
-					break;
-				case "wQ":
+
+				else if (chessBoardMap[row][col].contains("wQ"))
 					icon = whiteQueen;
-					break;
-				case "wR":
-					icon = whiteRook;
-					break;
-				case "wN":
-					icon = whiteKnight;
-					break;
-				case "wB":
+
+				else if (chessBoardMap[row][col].contains("wB"))
 					icon = whiteBishop;
-					break;
-				case "wP":
+
+				else if (chessBoardMap[row][col].contains("wN"))
+					icon = whiteKnight;
+
+				else if (chessBoardMap[row][col].contains("wR"))
+					icon = whiteRook;
+
+				else if (chessBoardMap[row][col].contains("wP"))
 					icon = whitePawn;
-					break;
-				case "bK":
+
+				else if (chessBoardMap[row][col].contains("bK"))
 					icon = blackKing;
-					break;
-				case "bQ":
+
+				else if (chessBoardMap[row][col].contains("bQ"))
 					icon = blackQueen;
-					break;
-				case "bR":
-					icon = blackRook;
-					break;
-				case "bN":
-					icon = blackKnight;
-					break;
-				case "bB":
+
+				else if (chessBoardMap[row][col].contains("bB"))
 					icon = blackBishop;
-					break;
-				case "bP":
+
+				else if (chessBoardMap[row][col].contains("bN"))
+					icon = blackKnight;
+
+				else if (chessBoardMap[row][col].contains("bR"))
+					icon = blackRook;
+
+				else if (chessBoardMap[row][col].contains("bP"))
 					icon = blackPawn;
-					break;
-				case "wKs":
-					icon = whiteKingSelect;
-					break;
-				case "wQs":
-					icon = whiteQueenSelect;
-					break;
-				case "wRs":
-					icon = whiteRookSelect;
-					break;
-				case "wNs":
-					icon = whiteKnightSelect;
-					break;
-				case "wBs":
-					icon = whiteBishopSelect;
-					break;
-				case "wPs":
-					icon = whitePawnSelect;
-					break;
-				case "bKs":
-					icon = blackKingSelect;
-					break;
-				case "bQs":
-					icon = blackQueenSelect;
-					break;
-				case "bRs":
-					icon = blackRookSelect;
-					break;
-				case "bNs":
-					icon = blackKnightSelect;
-					break;
-				case "bBs":
-					icon = blackBishopSelect;
-					break;
-				case "bPs":
-					icon = blackPawnSelect;
-					break;
-				case "eEs":
+
+				else if (chessBoardMap[row][col].contains("wKs"))
+					icon = whiteKing;
+
+				else if (chessBoardMap[row][col].contains("wQs"))
+					icon = whiteQueen;
+
+				else if (chessBoardMap[row][col].contains("wBs"))
+					icon = whiteBishop;
+
+				else if (chessBoardMap[row][col].contains("wNs"))
+					icon = whiteKnight;
+
+				else if (chessBoardMap[row][col].contains("wRs"))
+					icon = whiteRook;
+
+				else if (chessBoardMap[row][col].contains("wPs"))
+					icon = whitePawn;
+
+				else if (chessBoardMap[row][col].contains("bKs"))
+					icon = blackKing;
+
+				else if (chessBoardMap[row][col].contains("bQs"))
+					icon = blackQueen;
+
+				else if (chessBoardMap[row][col].contains("bBs"))
+					icon = blackBishop;
+
+				else if (chessBoardMap[row][col].contains("bNs"))
+					icon = blackKnight;
+
+				else if (chessBoardMap[row][col].contains("bRs"))
+					icon = blackRook;
+
+				else if (chessBoardMap[row][col].contains("bPs"))
+					icon = blackPawn;
+
+				else if (chessBoardMap[row][col].contains("eEs"))
 					icon = emptySelect;
-					break;
-				case "eEsR":
-					icon = emptySelect;
-					break;
-				default:
+
+				else
 					icon = null;
-				}
 
 				chessBoard[row][col].setIcon(icon);
 			}
@@ -596,67 +591,32 @@ public class HaevinChess extends JFrame {
 	}
 
 	public void gameAction() { // When board button is pressed...
-		if (!secondPlayer && !kingCheck) { // First player
-			switch (chessBoardMap[posX][posY]) {
-			case "wK":
-				kingRuleSet();
-				break;
-			case "wQ":
-				queenRuleSet();
-				break;
-			case "wR":
-				rookRuleSet();
-				break;
-			case "wN":
-				knightRuleSet();
-				break;
-			case "wB":
-				bishopRuleSet();
-				break;
-			case "wP":
-				pawnRuleSet();
-				break;
-			}
-		}
+		ruleSetSelect();
 
-		else if (!kingCheck) { // Second player
-			switch (chessBoardMap[posX][posY]) {
-			case "bK":
-				kingRuleSet();
-				break;
-			case "bQ":
-				queenRuleSet();
-				break;
-			case "bR":
-				rookRuleSet();
-				break;
-			case "bN":
-				knightRuleSet();
-				break;
-			case "bB":
-				bishopRuleSet();
-				break;
-			case "bP":
-				pawnRuleSet();
-				break;
-			}
-		}
-
-		else { // If king is in check
+		if (kingCheck) { // If king is in check
 			if (!secondPlayer) {
 				switch (chessBoardMap[posX][posY]) {
-				case "bK":
+				case "wK":
 					kingRuleSet();
 					break;
+				default:
+					kingCheck = true;
 				}
 			}
 
 			else {
 				switch (chessBoardMap[posX][posY]) {
-				case "wK":
+				case "bK":
 					kingRuleSet();
 					break;
+				default:
+					kingCheck = true;
 				}
+			}
+
+			if (chessBoardMap[posX][posY].contains("Z")) {
+				chessBoardMap[posX][posY] = chessBoardMap[posX][posY].replaceAll("Z", "");
+				pieceBlockCheckSelect = true;
 			}
 		}
 
@@ -665,26 +625,30 @@ public class HaevinChess extends JFrame {
 
 			if (castling) { // Castling-specific rule...
 				if (posY < 5) {
-					if (!secondPlayer) {
+					if (!secondPlayer && !castlingDoneP1) {
 						chessBoardMap[pieceStoreX][pieceStoreY - 1] = "wR";
 						chessBoardMap[BOARD_SIZE - 1][0] = "eE";
+						castlingDoneP1 = true;
 					}
 
-					else { 
+					else if (!castlingDoneP2) { 
 						chessBoardMap[pieceStoreX][pieceStoreY - 1] = "bR";
 						chessBoardMap[0][0] = "eE";
+						castlingDoneP2 = true;
 					}
 				}
 
 				else {
-					if (!secondPlayer) {
+					if (!secondPlayer && !castlingDoneP1) {
 						chessBoardMap[pieceStoreX][pieceStoreY + 1] = "wR";
 						chessBoardMap[BOARD_SIZE - 1][BOARD_SIZE - 1] = "eE";
+						castlingDoneP1 = true;
 					}
 
-					else { 
+					else if (!castlingDoneP2) { 
 						chessBoardMap[pieceStoreX][pieceStoreY + 1] = "bR";
 						chessBoardMap[0][BOARD_SIZE - 1] = "eE";
+						castlingDoneP2 = true;
 					}
 				}
 
@@ -708,7 +672,59 @@ public class HaevinChess extends JFrame {
 			checkGameScanner();
 		}
 
+		/*else if (!secondClick && pieceBlockCheckSelect) {
+			pieceBlockCheckSelect = false;
+		}*/
+
 		boardImageLoad();
+	}
+
+	public void ruleSetSelect() {
+		if (!secondPlayer && !kingCheck || pieceBlockCheckSelect) { // First player
+			switch (chessBoardMap[posX][posY]) {
+			case "wK":
+				kingRuleSet();
+				break;
+			case "wQ":
+				queenRuleSet();
+				break;
+			case "wR":
+				rookRuleSet();
+				break;
+			case "wN":
+				knightRuleSet();
+				break;
+			case "wB":
+				bishopRuleSet();
+				break;
+			case "wP":
+				pawnRuleSet();
+				break;
+			}
+		}
+
+		else if (!kingCheck || pieceBlockCheckSelect) { // Second player
+			switch (chessBoardMap[posX][posY]) {
+			case "bK":
+				kingRuleSet();
+				break;
+			case "bQ":
+				queenRuleSet();
+				break;
+			case "bR":
+				rookRuleSet();
+				break;
+			case "bN":
+				knightRuleSet();
+				break;
+			case "bB":
+				bishopRuleSet();
+				break;
+			case "bP":
+				pawnRuleSet();
+				break;
+			}
+		}
 	}
 
 	public void checkKingScanner() { // Checks if king(s) are in check, and what spots are danger/check spots...
@@ -718,50 +734,108 @@ public class HaevinChess extends JFrame {
 	public void checkGameScanner() {
 		// TODO -> have entire board scanned to see if a move has placed the king in check...
 		// force kingCheck to be true, forcing the only thing to be moved being the king...
-		
+
 		for (int i = 0; i < BOARD_SIZE; i++) {
 			for (int j = 0; j < BOARD_SIZE; j++) {
 				if (chessBoardMap[i][j].contains("P")) {
 					kingCheck = pawnCheck();
-					
+
 					if (kingCheck) {
 						break;
 					}
 				}
-				
+
 				if (chessBoardMap[i][j].contains("R")) {
 					kingCheck = rookCheck();
-					
+
 					if (kingCheck) {
 						break;
 					}
 				}
-				
+
 				if (chessBoardMap[i][j].contains("N")) {
 					kingCheck = knightCheck();
-					
+
 					if (kingCheck) {
 						break;
 					}
 				}
-				
+
 				if (chessBoardMap[i][j].contains("B")) {
 					kingCheck = bishopCheck();
-					
+
 					if (kingCheck) {
 						break;
 					}
 				}
-				
+
 				if (chessBoardMap[i][j].contains("Q")) {
 					kingCheck = queenCheck();
-					
+
 					if (kingCheck) {
 						break;
 					}
 				}
 			}
+
+			if (kingCheck) {
+				pieceBlockCheck();
+				checkKingScanner();
+				break;
+			}
 		}
+	}
+
+	public void pieceBlockCheck() { // Checks if certain pieces can block checks. Gives a "Z" designation in name if true.
+
+	}
+
+	public boolean pawnCheck() {
+		if (chessBoardMap[posX][posY].equals("wP")) {
+			try {
+				if (chessBoardMap[posX - 1][posY + 1].contains("bK")) {
+					return true;
+				}
+			} catch (Exception e) {}
+
+			try {
+				if (chessBoardMap[posX - 1][posY - 1].contains("bK")) {
+					return true;
+				}
+			} catch (Exception e) {}
+		}
+
+		else {
+			try {
+				if (chessBoardMap[posX + 1][posY + 1].contains("wK")) {
+					return true;
+				}
+			} catch (Exception e) {}
+
+			try {
+				if (chessBoardMap[posX + 1][posY - 1].contains("wK")) {
+					return true;
+				}
+			} catch (Exception e) {}
+		}
+
+		return false;
+	}
+
+	public boolean rookCheck() {
+		return false;
+	}
+
+	public boolean knightCheck() {
+		return false;
+	}
+
+	public boolean bishopCheck() {
+		return false;
+	}
+
+	public boolean queenCheck() {
+		return false;
 	}
 
 	public void pawnRuleSet() {
@@ -823,54 +897,6 @@ public class HaevinChess extends JFrame {
 		pieceStoreX = posX;
 		pieceStoreY = posY;
 		pieceStore = chessBoardMap[posX][posY];
-	}
-	
-	public boolean pawnCheck() {
-		if (chessBoardMap[posX][posY].equals("wP")) {
-			if (posY != BOARD_SIZE - 1) {
-				if (chessBoardMap[posX - 1][posY + 1].contains("bK")) {
-					return true;
-				}
-			}
-
-			if (posY != 0) {
-				if (chessBoardMap[posX - 1][posY - 1].contains("bK")) {
-					return true;
-				}
-			}
-		}
-		
-		else {
-			if (posY != BOARD_SIZE - 1) {
-				if (chessBoardMap[posX + 1][posY + 1].contains("wK")) {
-					return true;
-				}
-			}
-
-			if (posY != 0) {
-				if (chessBoardMap[posX + 1][posY - 1].contains("wK")) {
-					return true;
-				}
-			}
-		}
-		
-		return false;
-	}
-	
-	public boolean rookCheck() {
-		return false;
-	}
-	
-	public boolean knightCheck() {
-		return false;
-	}
-	
-	public boolean bishopCheck() {
-		return false;
-	}
-	
-	public boolean queenCheck() {
-		return false;
 	}
 
 	public void rookRuleSet() {
@@ -1342,6 +1368,10 @@ public class HaevinChess extends JFrame {
 
 				if (chessBoardMap[i][j].contains("s")) {
 					chessBoardMap[i][j] = chessBoardMap[i][j].replaceAll("s", "");
+				}
+
+				if (chessBoardMap[i][j].contains("B")) {
+					chessBoardMap[i][j] = chessBoardMap[i][j].replaceAll("Z", "");
 				}
 			}
 		}

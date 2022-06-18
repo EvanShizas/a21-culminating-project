@@ -823,6 +823,65 @@ public class HaevinChess extends JFrame {
 	}
 
 	public boolean rookCheck() {
+		if (chessBoardMap[posX][posY].equals("wR")) {
+            for (int i = 0; i < posX; i++) {
+                if (chessBoardMap[i][posY].contains("bK")) {
+                    System.out.println("true1");
+                    return true;
+                }
+            }
+
+            for (int i = posX; i < BOARD_SIZE-1; i++) {
+                if (chessBoardMap[i][posY].contains("bK")) {
+                    System.out.println("true2");
+                    return true;
+                }
+            }
+
+            for (int i = 0; i < posY; i++) {
+                if (chessBoardMap[posX][i].contains("bK")) {
+                    System.out.println("true3");
+                    return true;
+                }
+            }
+
+            for (int i = posY; i < BOARD_SIZE-1; i++) {
+                if (chessBoardMap[posX][i].contains("bK")) {
+                    System.out.println("true4");
+                    return true;
+                }
+            }
+        }
+
+        else {
+            for (int i = 0; i < posX; i++) {
+                if (chessBoardMap[i][posY].contains("wK")) {
+                    System.out.println("true5");
+                    return true;
+                }
+            }
+
+            for (int i = posX; i < BOARD_SIZE-1; i++) {
+                if (chessBoardMap[i][posY].contains("wK")) {
+                    System.out.println("true6");
+                    return true;
+                }
+            }
+
+            for (int i = 0; i < posY; i++) {
+                if (chessBoardMap[posX][i].contains("wK")) {
+                    System.out.println("true7");
+                    return true;
+                }
+            }
+
+            for (int i = posY; i < BOARD_SIZE-1; i++) {
+                if (chessBoardMap[posX][i].contains("wK")) {
+                    System.out.println("true8");
+                    return true;
+                }
+            }
+        }
 		return false;
 	}
 

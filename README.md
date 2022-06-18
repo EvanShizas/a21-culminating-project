@@ -26,6 +26,10 @@ easier tracking of what was done, so other collaborators may be able to know wha
 If a commit is to be made that is quite a major change/addition, please create a secondary branch and speak to the other collaborators before adding to main, as it may
 cause complications in the project repository that will take time to fix (unecessary trouble).
 
+To now load the game, it's as simple as last time. Have any of the classes open and compile/run. Since the main is only located in "HaevinChess.java", as long as the launch is taking place in the same root directory as that class file, the entire program should load just fine. Please let me know if any issues occur!
+
+Note: "~Properties.java" files contain all the code within methods called in the main class (HaevinChess.java). DO NOT IMPLEMENT A STATIC MAIN METHOD IN ANY JAVA CLASSES OUTSIDE OF THE MAIN PROGRAM! This may cause compiling errors! If any new piece-specific rules/moves are to be created, code them in their respective "~Properties.java" files. If things are to be added that do not correlate to any of the existing methods, please create a new one!
+
 This README.md will updated as the project progresses...
 
 - Evan Shizas

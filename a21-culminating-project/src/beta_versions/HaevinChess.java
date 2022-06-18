@@ -3,13 +3,13 @@ package beta_versions;
 /**
  * Haevin Chess. A game of Chess with a twist!
  * 
- * modified     20220614
+ * modified     20220618
  * date         20220531
  * @filename    HaevinChess.java
  * @author      Alvin Chan
  * @author      Hammad Hassan
  * @author      Evan Shizas
- * @version     0.1.0
+ * @version     0.3.0
  * @see         A21 - Culminating Project
  */
 
@@ -27,6 +27,15 @@ package beta_versions;
  * 	piece from getting into check when using it. A checkGame() method will need to be created as well. (06/13/2022 -> Evan)
  * 
  * 	Got all piece movements and behaviours complete. A checkKingScanner() and checkGameScanner() methods will need to be created as well. (06/14/2022 -> Evan)
+ * 
+ * 	Broke down the entire game into multiple class files. Each one contains a different aspect of the game and its properties. Not fully finalized but will be the new way
+ * 	in which we will manage variables and other things in the game to prevent the main class file (this one!!) from being too large and hard to manage. (06/18/2022 -> Evan)
+ * 
+ * 	Added restart functionality to the game. (06/18/2022 -> Evan)
+ */
+
+/** Developer Notes:
+ * 	
  */
 
 import java.awt.BorderLayout;
@@ -77,16 +86,18 @@ public class HaevinChess extends JFrame {
 	private JButton pause;
 	private JButton restart;
 	private JButton quit;
-	private JTextArea textArea;
 	private JLabel title;
-	private JLabel select;
-	private JLabel settings;
-	private JLabel version;
-	private JLabel fileViewLbl;
+	
+	PawnProperties pawnProperties = new PawnProperties();
+	RookProperties rookProperties = new RookProperties();
+	KnightProperties knightProperties = new KnightProperties();
+	BishopProperties bishopProperties = new BishopProperties();
+	QueenProperties queenProperties = new QueenProperties();
+	KingProperties kingProperties = new KingProperties();
 
 	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
-	final String VERSION = "v0.1.0 - (beta)";
+	final String VERSION = "v0.3.0 - (beta)";
 	final int BOARD_SIZE = 8, WIDTH = (int)screenSize.getWidth(), HEIGHT = (int)screenSize.getHeight();
 	final Color BROWN = new Color(185, 122, 87), WHITE = new Color(255, 255, 255);
 
@@ -98,32 +109,6 @@ public class HaevinChess extends JFrame {
 
 	ImageIcon winIcon = new ImageIcon("assets//images//window-icon.png");
 	ImageIcon background = new ImageIcon("assets//images//menu-background.jpg");
-	ImageIcon whiteKing = new ImageIcon("assets/images/white-king.png");
-	ImageIcon whiteQueen = new ImageIcon("assets/images/white-queen.png");
-	ImageIcon whiteRook = new ImageIcon("assets/images/white-rook.png");
-	ImageIcon whiteKnight = new ImageIcon("assets/images/white-knight.png");
-	ImageIcon whiteBishop = new ImageIcon("assets/images/white-bishop.png");
-	ImageIcon whitePawn = new ImageIcon("assets/images/white-pawn.png");
-	ImageIcon blackKing = new ImageIcon("assets/images/black-king.png");
-	ImageIcon blackQueen = new ImageIcon("assets/images/black-queen.png");
-	ImageIcon blackRook = new ImageIcon("assets/images/black-rook.png");
-	ImageIcon blackKnight = new ImageIcon("assets/images/black-knight.png");
-	ImageIcon blackBishop = new ImageIcon("assets/images/black-bishop.png");
-	ImageIcon blackPawn = new ImageIcon("assets/images/black-pawn.png");
-	ImageIcon whiteKingSelect = new ImageIcon("assets/images/white-king-select.png");
-	ImageIcon whiteQueenSelect = new ImageIcon("assets/images/white-queen-select.png");
-	ImageIcon whiteRookSelect = new ImageIcon("assets/images/white-rook-select.png");
-	ImageIcon whiteKnightSelect = new ImageIcon("assets/images/white-knight-select.png");
-	ImageIcon whiteBishopSelect = new ImageIcon("assets/images/white-bishop-select.png");
-	ImageIcon whitePawnSelect = new ImageIcon("assets/images/white-pawn-select.png");
-	ImageIcon blackKingSelect = new ImageIcon("assets/images/black-king-select.png");
-	ImageIcon blackQueenSelect = new ImageIcon("assets/images/black-queen-select.png");
-	ImageIcon blackRookSelect = new ImageIcon("assets/images/black-rook-select.png");
-	ImageIcon blackKnightSelect = new ImageIcon("assets/images/black-knight-select.png");
-	ImageIcon blackBishopSelect = new ImageIcon("assets/images/black-bishop-select.png");
-	ImageIcon blackPawnSelect = new ImageIcon("assets/images/black-pawn-select.png");
-	ImageIcon emptySelect = new ImageIcon("assets/images/empty-select.png");
-	ImageIcon placeholder = new ImageIcon();
 
 	String[][] chessBoardMap = new String[BOARD_SIZE][BOARD_SIZE];
 	JButton[][] chessBoard = new JButton[BOARD_SIZE][BOARD_SIZE];
@@ -132,7 +117,7 @@ public class HaevinChess extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					HaevinChess frame = new HaevinChess();
+					HaevinChessMainMenu frame = new HaevinChessMainMenu();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -142,17 +127,36 @@ public class HaevinChess extends JFrame {
 	}
 
 	public HaevinChess() { // Constructors
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setResizable(false);
 		setBackground(Color.WHITE);
 		setTitle("A21 - Haevin Chess [" + VERSION + "]");
 		setIconImage(winIcon.getImage()); 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 600, 700);
+		setBounds(10, 10, 1475, 750);
 		contentPane = new JPanel();
-		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
-		contentPane.setLayout(null);
+
+		northPanel = new JPanel();
+		contentPane.add(northPanel, BorderLayout.NORTH);
+
+		southPanel = new JPanel();
+		contentPane.add(southPanel, BorderLayout.SOUTH);
+
+		eastPanel = new JPanel();
+		eastPanel.setBorder(new EmptyBorder(5, (int) change, 5, 5));
+		contentPane.add(eastPanel, BorderLayout.EAST);
+
+		westPanel = new JPanel();
+		westPanel.setBorder(new EmptyBorder(5, (int) change, 5, 5));
+		contentPane.add(westPanel, BorderLayout.WEST);
+
+		centrePanel = new JPanel();
+		contentPane.add(centrePanel, BorderLayout.CENTER);
+		centrePanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		centrePanel.setLayout(new GridLayout(0, 8, 0, 0));
 
 		title = new JLabel("Haevin Chess");
 		title.setHorizontalAlignment(SwingConstants.CENTER);
@@ -160,42 +164,18 @@ public class HaevinChess extends JFrame {
 		title.setFont(new Font("Tahoma", Font.BOLD, 45));
 		title.setBackground(Color.WHITE);
 		title.setBounds(0, 0, 588, 90);
-		contentPane.add(title);
-
-		play = new JButton("Play");
-		play.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		play.setBounds(169, 173, 250, 72);
-		contentPane.add(play);
-		play.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				playActionPerformed(evt);
-			}
-		});
-
-		instructions = new JButton("Instructions");
-		instructions.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		instructions.setBounds(169, 256, 250, 72);
-		contentPane.add(instructions);
-		instructions.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				instructionsActionPerformed(evt);
-			}
-		});
-
-		exit = new JButton("Exit");
-		exit.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		exit.setBounds(169, 339, 250, 72);
-		contentPane.add(exit);
-		exit.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				exitActionPerformed(evt);
-			}
-		});
 
 		stats = new JButton("Stats");
 		stats.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				statsActionPerformed(evt);
+			}
+		});
+
+		instructions = new JButton("Instructions");
+		instructions.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				instructionsActionPerformed(evt);
 			}
 		});
 
@@ -220,173 +200,6 @@ public class HaevinChess extends JFrame {
 			}
 		});
 
-		version = new JLabel(VERSION);
-		version.setBackground(Color.WHITE);
-		version.setFont(new Font("Tahoma", Font.ITALIC, 9));
-		version.setBounds(10, 640, 84, 14);
-		contentPane.add(version);
-
-		fileViewLbl = new JLabel("HaevinChess.java");
-		fileViewLbl.setFont(new Font("Tahoma", Font.ITALIC, 9));
-		fileViewLbl.setBackground(Color.WHITE);
-		fileViewLbl.setHorizontalAlignment(SwingConstants.TRAILING);
-		fileViewLbl.setBounds(476, 640, 102, 14);
-		contentPane.add(fileViewLbl);
-
-		select = new JLabel("Select Game Mode:");
-		select.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		select.setBackground(Color.WHITE);
-		select.setBounds(10, 80, 428, 37);
-
-		settings = new JLabel("Settings:");
-		settings.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		settings.setBackground(Color.WHITE);
-		settings.setBounds(10, 252, 428, 37);
-
-		singlePlayer = new JButton("Single Player");
-		singlePlayer.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		singlePlayer.setBounds(139, 128, 310, 51);
-		singlePlayer.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				singlePlayerActionPerformed(evt);
-			}
-		});
-
-		multiPlayer = new JButton("Multiplayer");
-		multiPlayer.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		multiPlayer.setBounds(139, 190, 310, 51);
-		multiPlayer.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				multiPlayerActionPerformed(evt);
-			}
-		});
-
-		textArea = new JTextArea();
-		textArea.setBackground(Color.GRAY);
-		textArea.setBounds(10, 300, 568, 329);
-
-		goBack = new JButton("<");
-		goBack.setBounds(10, 10, 41, 23);
-		goBack.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				goBackActionPerformed(evt);
-			}
-		});
-	}
-
-	public void exitActionPerformed(java.awt.event.ActionEvent evt) {
-		System.exit(0);
-	}
-
-	public void pauseActionPerformed(java.awt.event.ActionEvent evt) {
-
-	}
-
-	public void instructionsActionPerformed(java.awt.event.ActionEvent evt) {
-
-	}
-
-	public void statsActionPerformed(java.awt.event.ActionEvent evt) {
-
-	}
-
-	public void restartActionPerformed(java.awt.event.ActionEvent evt) {
-
-	}
-
-	public void quitActionPerformed(java.awt.event.ActionEvent evt) {
-
-	}
-
-	public void playActionPerformed(java.awt.event.ActionEvent evt) {
-		contentPane.add(select);
-		contentPane.add(settings);
-		contentPane.add(singlePlayer);
-		contentPane.add(multiPlayer);
-		contentPane.add(textArea);
-		contentPane.add(goBack);
-
-		contentPane.remove(play);
-		contentPane.remove(instructions);
-		contentPane.remove(exit);
-
-		repaint();
-	}
-
-	public void goBackActionPerformed(java.awt.event.ActionEvent evt) {		
-		contentPane.add(play);
-		contentPane.add(instructions);
-		contentPane.add(exit);
-
-		contentPane.remove(select);
-		contentPane.remove(settings);
-		contentPane.remove(singlePlayer);
-		contentPane.remove(multiPlayer);
-		contentPane.remove(textArea);
-		contentPane.remove(goBack);
-
-		repaint();
-	}
-
-	public void singlePlayerActionPerformed(java.awt.event.ActionEvent evt) {
-		setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximizes screen.
-
-		contentPane.remove(select);
-		contentPane.remove(settings);
-		contentPane.remove(singlePlayer);
-		contentPane.remove(multiPlayer);
-		contentPane.remove(textArea);
-		contentPane.remove(goBack);
-		contentPane.remove(version);
-		contentPane.remove(fileViewLbl);
-
-		gameBoardInit();
-	}
-
-	public void multiPlayerActionPerformed(java.awt.event.ActionEvent evt) {
-		setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximizes screen.
-
-		contentPane.remove(select);
-		contentPane.remove(settings);
-		contentPane.remove(singlePlayer);
-		contentPane.remove(multiPlayer);
-		contentPane.remove(textArea);
-		contentPane.remove(goBack);
-		contentPane.remove(version);
-		contentPane.remove(fileViewLbl);
-
-		gameBoardInit();
-	}
-
-	public void gameBoardInit() { // Game Board Initializer. Contains board ActionListener!
-		setBounds(10, 10, 1475, 750);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
-		contentPane.setLayout(new BorderLayout(0, 0));
-
-		northPanel = new JPanel();
-		contentPane.add(northPanel, BorderLayout.NORTH);
-
-		southPanel = new JPanel();
-		contentPane.add(southPanel, BorderLayout.SOUTH);
-
-		eastPanel = new JPanel();
-		eastPanel.setBorder(new EmptyBorder(5, (int) change, 5, 5));
-		contentPane.add(eastPanel, BorderLayout.EAST);
-
-		westPanel = new JPanel();
-		westPanel.setBorder(new EmptyBorder(5, (int) change, 5, 5));
-		contentPane.add(westPanel, BorderLayout.WEST);
-
-		centrePanel = new JPanel();
-		contentPane.add(centrePanel, BorderLayout.CENTER);
-		centrePanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		centrePanel.setLayout(new GridLayout(0, 8, 0, 0));
-
-		instructions = new JButton("Instructions");
-
 		northPanel.add(title);		
 		southPanel.add(stats);
 		southPanel.add(instructions);
@@ -394,6 +207,7 @@ public class HaevinChess extends JFrame {
 		southPanel.add(restart);
 		southPanel.add(quit);
 
+		// Game board constructors and ActionListener below! Formerly part of gameBoardInit() method.
 		for (int row = 0; row < BOARD_SIZE; row++) {
 			for (int col = 0; col < BOARD_SIZE; col++) {
 				chessBoard[row][col] = new JButton();
@@ -502,89 +316,37 @@ public class HaevinChess extends JFrame {
 		boardImageLoad();
 	}
 
+	public void pauseActionPerformed(java.awt.event.ActionEvent evt) {
+		
+	}
+
+	public void instructionsActionPerformed(java.awt.event.ActionEvent evt) {
+		
+	}
+
+	public void statsActionPerformed(java.awt.event.ActionEvent evt) {
+		
+	}
+
+	public void restartActionPerformed(java.awt.event.ActionEvent evt) {
+		HaevinChess frame = new HaevinChess();
+		frame.setVisible(true);
+		setVisible(false);
+	}
+
+	public void quitActionPerformed(java.awt.event.ActionEvent evt) {
+		HaevinChessMainMenu frame = new HaevinChessMainMenu();
+		frame.setVisible(true);
+		setVisible(false);
+	}
+
 	public void boardImageLoad() {
 		ImageIcon icon = new ImageIcon();
+		IconSelect iconSelect = new IconSelect();
 
 		for (int row = 0; row < BOARD_SIZE; row++) {
 			for (int col = 0; col < BOARD_SIZE; col++) {				
-				if (chessBoardMap[row][col].contains("wK"))
-					icon = whiteKing;
-
-				else if (chessBoardMap[row][col].contains("wQ"))
-					icon = whiteQueen;
-
-				else if (chessBoardMap[row][col].contains("wB"))
-					icon = whiteBishop;
-
-				else if (chessBoardMap[row][col].contains("wN"))
-					icon = whiteKnight;
-
-				else if (chessBoardMap[row][col].contains("wR"))
-					icon = whiteRook;
-
-				else if (chessBoardMap[row][col].contains("wP"))
-					icon = whitePawn;
-
-				else if (chessBoardMap[row][col].contains("bK"))
-					icon = blackKing;
-
-				else if (chessBoardMap[row][col].contains("bQ"))
-					icon = blackQueen;
-
-				else if (chessBoardMap[row][col].contains("bB"))
-					icon = blackBishop;
-
-				else if (chessBoardMap[row][col].contains("bN"))
-					icon = blackKnight;
-
-				else if (chessBoardMap[row][col].contains("bR"))
-					icon = blackRook;
-
-				else if (chessBoardMap[row][col].contains("bP"))
-					icon = blackPawn;
-
-				else if (chessBoardMap[row][col].contains("wKs"))
-					icon = whiteKing;
-
-				else if (chessBoardMap[row][col].contains("wQs"))
-					icon = whiteQueen;
-
-				else if (chessBoardMap[row][col].contains("wBs"))
-					icon = whiteBishop;
-
-				else if (chessBoardMap[row][col].contains("wNs"))
-					icon = whiteKnight;
-
-				else if (chessBoardMap[row][col].contains("wRs"))
-					icon = whiteRook;
-
-				else if (chessBoardMap[row][col].contains("wPs"))
-					icon = whitePawn;
-
-				else if (chessBoardMap[row][col].contains("bKs"))
-					icon = blackKing;
-
-				else if (chessBoardMap[row][col].contains("bQs"))
-					icon = blackQueen;
-
-				else if (chessBoardMap[row][col].contains("bBs"))
-					icon = blackBishop;
-
-				else if (chessBoardMap[row][col].contains("bNs"))
-					icon = blackKnight;
-
-				else if (chessBoardMap[row][col].contains("bRs"))
-					icon = blackRook;
-
-				else if (chessBoardMap[row][col].contains("bPs"))
-					icon = blackPawn;
-
-				else if (chessBoardMap[row][col].contains("eEs"))
-					icon = emptySelect;
-
-				else
-					icon = null;
-
+				icon = iconSelect.load(icon, chessBoardMap, row, col);
 				chessBoard[row][col].setIcon(icon);
 			}
 		}
@@ -672,10 +434,6 @@ public class HaevinChess extends JFrame {
 			checkGameScanner();
 		}
 
-		/*else if (!secondClick && pieceBlockCheckSelect) {
-			pieceBlockCheckSelect = false;
-		}*/
-
 		boardImageLoad();
 	}
 
@@ -727,18 +485,11 @@ public class HaevinChess extends JFrame {
 		}
 	}
 
-	public void checkKingScanner() { // Checks if king(s) are in check, and what spots are danger/check spots...
-		// TODO -> remove selected spots that will put the king in check by changing the chessBoardMap[][] values.
-	}
-
 	public void checkGameScanner() {
-		// TODO -> have entire board scanned to see if a move has placed the king in check...
-		// force kingCheck to be true, forcing the only thing to be moved being the king...
-
 		for (int i = 0; i < BOARD_SIZE; i++) {
 			for (int j = 0; j < BOARD_SIZE; j++) {
 				if (chessBoardMap[i][j].contains("P")) {
-					kingCheck = pawnCheck();
+					kingCheck = pawnProperties.gameCheck(chessBoardMap, posX, posY);
 
 					if (kingCheck) {
 						break;
@@ -746,7 +497,7 @@ public class HaevinChess extends JFrame {
 				}
 
 				if (chessBoardMap[i][j].contains("R")) {
-					kingCheck = rookCheck();
+					kingCheck = rookProperties.gameCheck(chessBoardMap, posX, posY, BOARD_SIZE);
 
 					if (kingCheck) {
 						break;
@@ -754,7 +505,7 @@ public class HaevinChess extends JFrame {
 				}
 
 				if (chessBoardMap[i][j].contains("N")) {
-					kingCheck = knightCheck();
+					kingCheck = knightProperties.gameCheck(chessBoardMap, posX, posY);
 
 					if (kingCheck) {
 						break;
@@ -762,7 +513,7 @@ public class HaevinChess extends JFrame {
 				}
 
 				if (chessBoardMap[i][j].contains("B")) {
-					kingCheck = bishopCheck();
+					kingCheck = bishopProperties.gameCheck(chessBoardMap, posX, posY);
 
 					if (kingCheck) {
 						break;
@@ -770,7 +521,7 @@ public class HaevinChess extends JFrame {
 				}
 
 				if (chessBoardMap[i][j].contains("Q")) {
-					kingCheck = queenCheck();
+					kingCheck = queenProperties.gameCheck(chessBoardMap, posX, posY);
 
 					if (kingCheck) {
 						break;
@@ -780,178 +531,25 @@ public class HaevinChess extends JFrame {
 
 			if (kingCheck) {
 				pieceBlockCheck();
-				checkKingScanner();
+				kingProperties.checkKingScanner(chessBoardMap, posX, posY);
 				break;
 			}
 		}
 	}
 
 	public void pieceBlockCheck() { // Checks if certain pieces can block checks. Gives a "Z" designation in name if true.
-
-	}
-
-	public boolean pawnCheck() {
-		if (chessBoardMap[posX][posY].equals("wP")) {
-			try {
-				if (chessBoardMap[posX - 1][posY + 1].contains("bK")) {
-					return true;
-				}
-			} catch (Exception e) {}
-
-			try {
-				if (chessBoardMap[posX - 1][posY - 1].contains("bK")) {
-					return true;
-				}
-			} catch (Exception e) {}
-		}
-
-		if (chessBoardMap[posX][posY].equals("bP")) {
-			try {
-				if (chessBoardMap[posX + 1][posY + 1].contains("wK")) {
-					return true;
-				}
-			} catch (Exception e) {}
-
-			try {
-				if (chessBoardMap[posX + 1][posY - 1].contains("wK")) {
-					return true;
-				}
-			} catch (Exception e) {}
-		}
-
-		return false;
-	}
-
-	public boolean rookCheck() {
-		if (chessBoardMap[posX][posY].equals("wR")) {
-            for (int i = 0; i < posX; i++) {
-                if (chessBoardMap[i][posY].contains("bK")) {
-                    System.out.println("true1");
-                    return true;
-                }
-            }
-
-            for (int i = posX; i < BOARD_SIZE-1; i++) {
-                if (chessBoardMap[i][posY].contains("bK")) {
-                    System.out.println("true2");
-                    return true;
-                }
-            }
-
-            for (int i = 0; i < posY; i++) {
-                if (chessBoardMap[posX][i].contains("bK")) {
-                    System.out.println("true3");
-                    return true;
-                }
-            }
-
-            for (int i = posY; i < BOARD_SIZE-1; i++) {
-                if (chessBoardMap[posX][i].contains("bK")) {
-                    System.out.println("true4");
-                    return true;
-                }
-            }
-        }
-
-        if (chessBoardMap[posX][posY].equals("bR")) {
-            for (int i = 0; i < posX; i++) {
-                if (chessBoardMap[i][posY].contains("wK")) {
-                    System.out.println("true5");
-                    return true;
-                }
-            }
-
-            for (int i = posX; i < BOARD_SIZE-1; i++) {
-                if (chessBoardMap[i][posY].contains("wK")) {
-                    System.out.println("true6");
-                    return true;
-                }
-            }
-
-            for (int i = 0; i < posY; i++) {
-                if (chessBoardMap[posX][i].contains("wK")) {
-                    System.out.println("true7");
-                    return true;
-                }
-            }
-
-            for (int i = posY; i < BOARD_SIZE-1; i++) {
-                if (chessBoardMap[posX][i].contains("wK")) {
-                    System.out.println("true8");
-                    return true;
-                }
-            }
-        }
-		return false;
-	}
-
-	public boolean knightCheck() {
-		return false;
-	}
-
-	public boolean bishopCheck() {
-		return false;
-	}
-
-	public boolean queenCheck() {
-		return false;
+		pawnProperties.pieceBlockCheck(chessBoardMap, posX, posY, BOARD_SIZE);
+		rookProperties.pieceBlockCheck(chessBoardMap, posX, posY, BOARD_SIZE);
+		knightProperties.pieceBlockCheck(chessBoardMap, posX, posY, BOARD_SIZE);
+		bishopProperties.pieceBlockCheck(chessBoardMap, posX, posY, BOARD_SIZE);
+		queenProperties.pieceBlockCheck(chessBoardMap, posX, posY, BOARD_SIZE);
 	}
 
 	public void pawnRuleSet() {
 		if (!secondClick)
 			selectReset();
 
-		if (chessBoardMap[posX][posY].equals("wP")) {
-			if (posX == 6) {
-				if (chessBoardMap[posX - 2][posY].equals("eE") && chessBoardMap[posX - 1][posY].equals("eE")) {
-					chessBoardMap[posX - 2][posY] += "s";
-				}
-			}
-
-			if (posX != 0) {
-				if (chessBoardMap[posX - 1][posY].equals("eE")) {
-					chessBoardMap[posX - 1][posY] += "s";
-				}
-
-				if (posY != BOARD_SIZE - 1) {
-					if (!chessBoardMap[posX - 1][posY + 1].equals("eE") && !chessBoardMap[posX - 1][posY + 1].contains(charTurnContain)) {
-						chessBoardMap[posX - 1][posY + 1] += "s";
-					}
-				}
-
-				if (posY != 0) {
-					if (!chessBoardMap[posX - 1][posY - 1].equals("eE") && !chessBoardMap[posX - 1][posY - 1].contains(charTurnContain)) {
-						chessBoardMap[posX - 1][posY - 1] += "s";
-					}
-				}
-			}
-		}
-
-		else {
-			if (posX == 1) {
-				if (chessBoardMap[posX + 2][posY].equals("eE") && chessBoardMap[posX + 1][posY].equals("eE")) {
-					chessBoardMap[posX + 2][posY] += "s";
-				}
-			}
-
-			if (posX != BOARD_SIZE - 1) {
-				if (chessBoardMap[posX + 1][posY].equals("eE")) {
-					chessBoardMap[posX + 1][posY] += "s";
-				}
-
-				if (posY != BOARD_SIZE - 1) {
-					if (!chessBoardMap[posX + 1][posY + 1].equals("eE") && !chessBoardMap[posX + 1][posY + 1].contains(charTurnContain)) {
-						chessBoardMap[posX + 1][posY + 1] += "s";
-					}
-				}
-
-				if (posY != 0) {
-					if (!chessBoardMap[posX + 1][posY - 1].equals("eE") && !chessBoardMap[posX + 1][posY - 1].contains(charTurnContain)) {
-						chessBoardMap[posX + 1][posY - 1] += "s";
-					}
-				}
-			}
-		}
+		pawnProperties.ruleSet(chessBoardMap, charTurnContain, posX, posY, BOARD_SIZE);
 
 		pieceStoreX = posX;
 		pieceStoreY = posY;
@@ -962,65 +560,7 @@ public class HaevinChess extends JFrame {
 		if (!secondClick)
 			selectReset();
 
-		for (int i = posX + 1; i < BOARD_SIZE; i++) {
-			if (chessBoardMap[i][posY].equals("eE")) {
-				chessBoardMap[i][posY] += "s";
-			}
-
-			else if (!chessBoardMap[i][posY].equals("eE") && !chessBoardMap[i][posY].contains(charTurnContain)) {
-				chessBoardMap[i][posY] += "s";
-				break;
-			}
-
-			else {
-				break;
-			}
-		}
-
-		for (int i = posX - 1; i > -1; i--) {
-			if (chessBoardMap[i][posY].equals("eE")) {
-				chessBoardMap[i][posY] += "s";
-			}
-
-			else if (!chessBoardMap[i][posY].equals("eE") && !chessBoardMap[i][posY].contains(charTurnContain)) {
-				chessBoardMap[i][posY] += "s";
-				break;
-			}
-
-			else {
-				break;
-			}
-		}
-
-		for (int i = posY + 1; i < BOARD_SIZE; i++) {
-			if (chessBoardMap[posX][i].equals("eE")) {
-				chessBoardMap[posX][i] += "s";
-			}
-
-			else if (!chessBoardMap[posX][i].equals("eE") && !chessBoardMap[posX][i].contains(charTurnContain)) {
-				chessBoardMap[posX][i] += "s";
-				break;
-			}
-
-			else {
-				break;
-			}
-		}
-
-		for (int i = posY - 1; i > -1; i--) {
-			if (chessBoardMap[posX][i].equals("eE")) {
-				chessBoardMap[posX][i] += "s";
-			}
-
-			else if (!chessBoardMap[posX][i].equals("eE") && !chessBoardMap[posX][i].contains(charTurnContain)) {
-				chessBoardMap[posX][i] += "s";
-				break;
-			}
-
-			else {
-				break;
-			}
-		}
+		rookProperties.ruleSet(chessBoardMap, charTurnContain, posX, posY, BOARD_SIZE);
 
 		pieceStoreX = posX;
 		pieceStoreY = posY;
@@ -1031,53 +571,7 @@ public class HaevinChess extends JFrame {
 		if (!secondClick)
 			selectReset();
 
-		try {
-			if (chessBoardMap[posX + 2][posY + 1].equals("eE") || !chessBoardMap[posX + 2][posY + 1].contains(charTurnContain)) {
-				chessBoardMap[posX + 2][posY + 1] += "s";
-			}
-		} catch (Exception e) {}
-
-		try {
-			if (chessBoardMap[posX + 2][posY - 1].equals("eE") || !chessBoardMap[posX + 2][posY - 1].contains(charTurnContain)) {
-				chessBoardMap[posX + 2][posY - 1] += "s";
-			}
-		} catch (Exception e) {}
-
-		try {
-			if (chessBoardMap[posX - 2][posY + 1].equals("eE") || !chessBoardMap[posX - 2][posY + 1].contains(charTurnContain)) {
-				chessBoardMap[posX - 2][posY + 1] += "s";
-			}
-		} catch (Exception e) {}
-
-		try {
-			if (chessBoardMap[posX - 2][posY - 1].equals("eE") || !chessBoardMap[posX - 2][posY - 1].contains(charTurnContain)) {
-				chessBoardMap[posX - 2][posY - 1] += "s";
-			}
-		} catch (Exception e) {}
-
-		try {
-			if (chessBoardMap[posX + 1][posY + 2].equals("eE") || !chessBoardMap[posX + 1][posY + 2].contains(charTurnContain)) {
-				chessBoardMap[posX + 1][posY + 2] += "s";
-			}
-		} catch (Exception e) {}
-
-		try {
-			if (chessBoardMap[posX + 1][posY - 2].equals("eE") || !chessBoardMap[posX + 1][posY - 2].contains(charTurnContain)) {
-				chessBoardMap[posX + 1][posY - 2] += "s";
-			}
-		} catch (Exception e) {}
-
-		try {
-			if (chessBoardMap[posX - 1][posY + 2].equals("eE") || !chessBoardMap[posX - 1][posY + 2].contains(charTurnContain)) {
-				chessBoardMap[posX - 1][posY + 2] += "s";
-			}
-		} catch (Exception e) {}
-
-		try {
-			if (chessBoardMap[posX - 1][posY - 2].equals("eE") || !chessBoardMap[posX - 1][posY - 2].contains(charTurnContain)) {
-				chessBoardMap[posX - 1][posY - 2] += "s";
-			}
-		} catch (Exception e) {}
+		knightProperties.ruleSet(chessBoardMap, charTurnContain, posX, posY, BOARD_SIZE);
 
 		pieceStoreX = posX;
 		pieceStoreY = posY;
@@ -1085,95 +579,10 @@ public class HaevinChess extends JFrame {
 	}
 
 	public void bishopRuleSet() {
-		int j = 0;
-
 		if (!secondClick)
 			selectReset();
 
-		try {
-			j = posY + 1;
-
-			for (int i = posX + 1; i < BOARD_SIZE; i++) {
-				if (chessBoardMap[i][j].equals("eE")) {
-					chessBoardMap[i][j] += "s";
-				}
-
-				else if (!chessBoardMap[i][j].equals("eE") && !chessBoardMap[i][j].contains(charTurnContain)) {
-					chessBoardMap[i][j] += "s";
-					break;
-				}
-
-				else {
-					break;
-				}
-
-				j++;
-			}
-		} catch (Exception e) {}
-
-		try {
-			j = posY - 1;
-
-			for (int i = posX - 1; i > -1; i--) {
-				if (chessBoardMap[i][j].equals("eE")) {
-					chessBoardMap[i][j] += "s";
-				}
-
-				else if (!chessBoardMap[i][j].equals("eE") && !chessBoardMap[i][j].contains(charTurnContain)) {
-					chessBoardMap[i][j] += "s";
-					break;
-				}
-
-				else {
-					break;
-				}
-
-				j--;
-			}
-		} catch (Exception e) {}
-
-		try {
-			j = posY + 1;
-
-			for (int i = posX - 1; i > -1; i--) {
-				if (chessBoardMap[i][j].equals("eE")) {
-					chessBoardMap[i][j] += "s";
-				}
-
-				else if (!chessBoardMap[i][j].equals("eE") && !chessBoardMap[i][j].contains(charTurnContain)) {
-					chessBoardMap[i][j] += "s";
-					break;
-				}
-
-				else {
-					break;
-				}
-
-				j++;
-			}
-		} catch (Exception e) {}
-
-		try {
-			j = posY - 1;
-
-			for (int i = posX + 1; i < BOARD_SIZE; i++) {
-				if (chessBoardMap[i][j].equals("eE")) {
-					chessBoardMap[i][j] += "s";
-				}
-
-				else if (!chessBoardMap[i][j].equals("eE") && !chessBoardMap[i][j].contains(charTurnContain)) {
-					chessBoardMap[i][j] += "s";
-					break;
-				}
-
-				else {
-					break;
-				}
-
-				j--;
-			}
-		} catch (Exception e) {}
-
+		bishopProperties.ruleSet(chessBoardMap, charTurnContain, posX, posY, BOARD_SIZE);
 
 		pieceStoreX = posX;
 		pieceStoreY = posY;
@@ -1181,154 +590,10 @@ public class HaevinChess extends JFrame {
 	}
 
 	public void queenRuleSet() {
-		int j = 0;
-
 		if (!secondClick)
 			selectReset();
 
-		try {
-			j = posY + 1;
-
-			for (int i = posX + 1; i < BOARD_SIZE; i++) {
-				if (chessBoardMap[i][j].equals("eE")) {
-					chessBoardMap[i][j] += "s";
-				}
-
-				else if (!chessBoardMap[i][j].equals("eE") && !chessBoardMap[i][j].contains(charTurnContain)) {
-					chessBoardMap[i][j] += "s";
-					break;
-				}
-
-				else {
-					break;
-				}
-
-				j++;
-			}
-		} catch (Exception e) {}
-
-		try {
-			j = posY - 1;
-
-			for (int i = posX - 1; i > -1; i--) {
-				if (chessBoardMap[i][j].equals("eE")) {
-					chessBoardMap[i][j] += "s";
-				}
-
-				else if (!chessBoardMap[i][j].equals("eE") && !chessBoardMap[i][j].contains(charTurnContain)) {
-					chessBoardMap[i][j] += "s";
-					break;
-				}
-
-				else {
-					break;
-				}
-
-				j--;
-			}
-		} catch (Exception e) {}
-
-		try {
-			j = posY + 1;
-
-			for (int i = posX - 1; i > -1; i--) {
-				if (chessBoardMap[i][j].equals("eE")) {
-					chessBoardMap[i][j] += "s";
-				}
-
-				else if (!chessBoardMap[i][j].equals("eE") && !chessBoardMap[i][j].contains(charTurnContain)) {
-					chessBoardMap[i][j] += "s";
-					break;
-				}
-
-				else {
-					break;
-				}
-
-				j++;
-			}
-		} catch (Exception e) {}
-
-		try {
-			j = posY - 1;
-
-			for (int i = posX + 1; i < BOARD_SIZE; i++) {
-				if (chessBoardMap[i][j].equals("eE")) {
-					chessBoardMap[i][j] += "s";
-				}
-
-				else if (!chessBoardMap[i][j].equals("eE") && !chessBoardMap[i][j].contains(charTurnContain)) {
-					chessBoardMap[i][j] += "s";
-					break;
-				}
-
-				else {
-					break;
-				}
-
-				j--;
-			}
-		} catch (Exception e) {}
-
-		for (int i = posX + 1; i < BOARD_SIZE; i++) {
-			if (chessBoardMap[i][posY].equals("eE")) {
-				chessBoardMap[i][posY] += "s";
-			}
-
-			else if (!chessBoardMap[i][posY].equals("eE") && !chessBoardMap[i][posY].contains(charTurnContain)) {
-				chessBoardMap[i][posY] += "s";
-				break;
-			}
-
-			else {
-				break;
-			}
-		}
-
-		for (int i = posX - 1; i > -1; i--) {
-			if (chessBoardMap[i][posY].equals("eE")) {
-				chessBoardMap[i][posY] += "s";
-			}
-
-			else if (!chessBoardMap[i][posY].equals("eE") && !chessBoardMap[i][posY].contains(charTurnContain)) {
-				chessBoardMap[i][posY] += "s";
-				break;
-			}
-
-			else {
-				break;
-			}
-		}
-
-		for (int i = posY + 1; i < BOARD_SIZE; i++) {
-			if (chessBoardMap[posX][i].equals("eE")) {
-				chessBoardMap[posX][i] += "s";
-			}
-
-			else if (!chessBoardMap[posX][i].equals("eE") && !chessBoardMap[posX][i].contains(charTurnContain)) {
-				chessBoardMap[posX][i] += "s";
-				break;
-			}
-
-			else {
-				break;
-			}
-		}
-
-		for (int i = posY - 1; i > -1; i--) {
-			if (chessBoardMap[posX][i].equals("eE")) {
-				chessBoardMap[posX][i] += "s";
-			}
-
-			else if (!chessBoardMap[posX][i].equals("eE") && !chessBoardMap[posX][i].contains(charTurnContain)) {
-				chessBoardMap[posX][i] += "s";
-				break;
-			}
-
-			else {
-				break;
-			}
-		}
+		queenProperties.ruleSet(chessBoardMap, charTurnContain, posX, posY, BOARD_SIZE);
 
 		pieceStoreX = posX;
 		pieceStoreY = posY;
@@ -1339,83 +604,11 @@ public class HaevinChess extends JFrame {
 		if (!secondClick)
 			selectReset();
 
-		try {
-			if (chessBoardMap[posX + 1][posY].equals("eE") || !chessBoardMap[posX + 1][posY].contains(charTurnContain) && !chessBoardMap[posX + 1][posY].contains("K")) {
-				chessBoardMap[posX + 1][posY] += "s";
-			}
-		} catch (Exception e) {}
-
-		try {
-			if (chessBoardMap[posX - 1][posY].equals("eE") || !chessBoardMap[posX - 1][posY].contains(charTurnContain) && !chessBoardMap[posX - 1][posY].contains("K")) {
-				chessBoardMap[posX - 1][posY] += "s";
-			}
-		} catch (Exception e) {}
-
-		try {
-			if (chessBoardMap[posX][posY + 1].equals("eE") || !chessBoardMap[posX][posY + 1].contains(charTurnContain) && !chessBoardMap[posX][posY + 1].contains("K")) {
-				chessBoardMap[posX][posY + 1] += "s";
-			}
-		} catch (Exception e) {}
-
-		try {
-			if (chessBoardMap[posX][posY - 1].equals("eE") || !chessBoardMap[posX][posY - 1].contains(charTurnContain) && !chessBoardMap[posX][posY - 1].contains("K")) {
-				chessBoardMap[posX][posY - 1] += "s";
-			}
-		} catch (Exception e) {}
-
-		try {
-			if (chessBoardMap[posX + 1][posY + 1].equals("eE") || !chessBoardMap[posX + 1][posY + 1].contains(charTurnContain) && !chessBoardMap[posX + 1][posY + 1].contains("K")) {
-				chessBoardMap[posX + 1][posY + 1] += "s";
-			}
-		} catch (Exception e) {}
-
-		try {
-			if (chessBoardMap[posX - 1][posY + 1].equals("eE") || !chessBoardMap[posX - 1][posY + 1].contains(charTurnContain) && !chessBoardMap[posX - 1][posY + 1].contains("K")) {
-				chessBoardMap[posX - 1][posY + 1] += "s";
-			}
-		} catch (Exception e) {}
-
-		try {
-			if (chessBoardMap[posX + 1][posY - 1].equals("eE") || !chessBoardMap[posX + 1][posY - 1].contains(charTurnContain) && !chessBoardMap[posX + 1][posY - 1].contains("K")) {
-				chessBoardMap[posX + 1][posY - 1] += "s";
-			}
-		} catch (Exception e) {}
-
-		try {
-			if (chessBoardMap[posX - 1][posY - 1].equals("eE") || !chessBoardMap[posX - 1][posY - 1].contains(charTurnContain) && !chessBoardMap[posX - 1][posY - 1].contains("K")) {
-				chessBoardMap[posX - 1][posY - 1] += "s";
-			}
-		} catch (Exception e) {}
-
-		if (chessBoardMap[posX][posY].equals("wK")) {
-			if (chessBoardMap[BOARD_SIZE - 1][0].equals("wR") && chessBoardMap[BOARD_SIZE - 1][1].equals("eE") && chessBoardMap[BOARD_SIZE - 1][2].equals("eE") && chessBoardMap[BOARD_SIZE - 1][3].equals("eEs") 
-					&& chessBoardMap[BOARD_SIZE - 1][4].equals("wK")) {
-				chessBoardMap[BOARD_SIZE - 1][2] += "sR";
-			}
-
-			else if (chessBoardMap[BOARD_SIZE - 1][BOARD_SIZE - 1].equals("wR") && chessBoardMap[BOARD_SIZE - 1][BOARD_SIZE - 2].equals("eE") && chessBoardMap[BOARD_SIZE - 1][BOARD_SIZE - 3].equals("eEs") 
-					&& chessBoardMap[BOARD_SIZE - 1][4].equals("wK")) {
-				chessBoardMap[BOARD_SIZE - 1][6] += "sR";
-			}
-		}
-
-		else {
-			if (chessBoardMap[0][0].equals("bR") && chessBoardMap[0][1].equals("eE") && chessBoardMap[0][2].equals("eE") && chessBoardMap[0][3].equals("eEs") 
-					&& chessBoardMap[0][4].equals("bK")) {
-				chessBoardMap[0][2] += "sR";
-			}
-
-			else if (chessBoardMap[0][0].equals("bR") && chessBoardMap[0][BOARD_SIZE - 2].equals("eE") && chessBoardMap[0][BOARD_SIZE - 3].equals("eEs") 
-					&& chessBoardMap[0][4].equals("bK")) {
-				chessBoardMap[0][6] += "sR";
-			}
-		}
+		kingProperties.ruleSet(chessBoardMap, charTurnContain, posX, posY, BOARD_SIZE);
 
 		pieceStoreX = posX;
 		pieceStoreY = posY;
 		pieceStore = chessBoardMap[posX][posY];
-
-		checkKingScanner();
 	}
 
 	public void selectReset() { // Resets any highlighted spots which were available to be selected from for specific piece chosen...
@@ -1447,8 +640,4 @@ public class HaevinChess extends JFrame {
 		}
 		System.out.println();
 	}
-
-	/** Developer Notes:
-	 * 	
-	 */
 }

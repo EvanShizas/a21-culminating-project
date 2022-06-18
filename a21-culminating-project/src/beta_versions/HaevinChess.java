@@ -853,7 +853,7 @@ public class HaevinChess extends JFrame {
             }
         }
 
-        else {
+        if (chessBoardMap[posX][posY].equals("bR")) {
             for (int i = 0; i < posX; i++) {
                 if (chessBoardMap[i][posY].contains("wK")) {
                     System.out.println("true5");

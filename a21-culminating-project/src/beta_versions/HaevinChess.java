@@ -805,7 +805,7 @@ public class HaevinChess extends JFrame {
 			} catch (Exception e) {}
 		}
 
-		else {
+		if (chessBoardMap[posX][posY].equals("bP")) {
 			try {
 				if (chessBoardMap[posX + 1][posY + 1].contains("wK")) {
 					return true;

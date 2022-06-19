@@ -95,71 +95,87 @@ public class BishopProperties {
 		int j = 0;
 		
 		if (chessBoardMap[posX][posY].equals("wB")) {
-			j = posY + 1;
-			for (int i = posX + 1; i < BOARD_SIZE; i++) {
-				if (chessBoardMap[i][j].contains("bK")) {
-					return true;
+			try {
+				j = posY + 1;
+				for (int i = posX + 1; i < BOARD_SIZE; i++) {
+					if (chessBoardMap[i][j].contains("bK")) {
+						return true;
+					}
+					j++;
 				}
-				j++;
-			}
+			} catch (Exception e) {}
 
-			j = posY - 1;
-			for (int i = posX - 1; i > -1; i--) {
-				if (chessBoardMap[i][j].contains("bK")) {
-					return true;
+			try {
+				j = posY - 1;
+				for (int i = posX - 1; i > -1; i--) {
+					if (chessBoardMap[i][j].contains("bK")) {
+						return true;
+					}
+					j--;
 				}
-				j--;
-			}
+			} catch (Exception e) {}
 
-			j = posY + 1;
-			for (int i = posX - 1; i > -1; i--) {
-				if (chessBoardMap[i][j].contains("bK")) {
-					return true;
+			try {
+				j = posY + 1;
+				for (int i = posX - 1; i > -1; i--) {
+					if (chessBoardMap[i][j].contains("bK")) {
+						return true;
+					}
+					j++;
 				}
-				j++;
-			}
+			} catch (Exception e) {}
 
-			j = posY - 1;
-			for (int i = posX + 1; i < BOARD_SIZE; i++) {
-				if (chessBoardMap[i][j].contains("bK")) {
-					return true;
+			try {
+				j = posY - 1;
+				for (int i = posX + 1; i < BOARD_SIZE; i++) {
+					if (chessBoardMap[i][j].contains("bK")) {
+						return true;
+					}
+					j--;
 				}
-				j--;
-			}
+			} catch (Exception e) {}
 		}
 		
 		if (chessBoardMap[posX][posY].equals("bB")) {
-			j = posY + 1;
-			for (int i = posX + 1; i < BOARD_SIZE; i++) {
-				if (chessBoardMap[i][j].contains("wK")) {
-					return true;
+			try {
+				j = posY + 1;
+				for (int i = posX + 1; i < BOARD_SIZE; i++) {
+					if (chessBoardMap[i][j].contains("wK")) {
+						return true;
+					}
+					j++;
 				}
-				j++;
-			}
+			} catch (Exception e) {}
 
-			j = posY - 1;
-			for (int i = posX - 1; i > -1; i--) {
-				if (chessBoardMap[i][j].contains("wK")) {
-					return true;
+			try {
+				j = posY - 1;
+				for (int i = posX - 1; i > -1; i--) {
+					if (chessBoardMap[i][j].contains("wK")) {
+						return true;
+					}
+					j--;
 				}
-				j--;
-			}
+			} catch (Exception e) {}
 
-			j = posY + 1;
-			for (int i = posX - 1; i > -1; i--) {
-				if (chessBoardMap[i][j].contains("wK")) {
-					return true;
+			try {
+				j = posY + 1;
+				for (int i = posX - 1; i > -1; i--) {
+					if (chessBoardMap[i][j].contains("wK")) {
+						return true;
+					}
+					j++;
 				}
-				j++;
-			}
+			} catch (Exception e) {}
 
-			j = posY - 1;
-			for (int i = posX + 1; i < BOARD_SIZE; i++) {
-				if (chessBoardMap[i][j].contains("wK")) {
-					return true;
+			try {
+				j = posY - 1;
+				for (int i = posX + 1; i < BOARD_SIZE; i++) {
+					if (chessBoardMap[i][j].contains("wK")) {
+						return true;
+					}
+					j--;
 				}
-				j--;
-			}
+			} catch (Exception e) {}
 		}
 		return false;
 	}

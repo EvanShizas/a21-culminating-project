@@ -489,7 +489,7 @@ public class HaevinChess extends JFrame {
 		for (int i = 0; i < BOARD_SIZE; i++) {
 			for (int j = 0; j < BOARD_SIZE; j++) {
 				if (chessBoardMap[i][j].contains("P")) {
-					kingCheck = pawnProperties.gameCheck(chessBoardMap, posX, posY);
+					kingCheck = pawnProperties.gameCheck(chessBoardMap, posX, posY, BOARD_SIZE);
 
 					if (kingCheck) {
 						break;
@@ -505,7 +505,7 @@ public class HaevinChess extends JFrame {
 				}
 
 				if (chessBoardMap[i][j].contains("N")) {
-					kingCheck = knightProperties.gameCheck(chessBoardMap, posX, posY);
+					kingCheck = knightProperties.gameCheck(chessBoardMap, posX, posY, BOARD_SIZE);
 
 					if (kingCheck) {
 						break;
@@ -513,7 +513,7 @@ public class HaevinChess extends JFrame {
 				}
 
 				if (chessBoardMap[i][j].contains("B")) {
-					kingCheck = bishopProperties.gameCheck(chessBoardMap, posX, posY);
+					kingCheck = bishopProperties.gameCheck(chessBoardMap, posX, posY, BOARD_SIZE);
 
 					if (kingCheck) {
 						break;
@@ -521,7 +521,7 @@ public class HaevinChess extends JFrame {
 				}
 
 				if (chessBoardMap[i][j].contains("Q")) {
-					kingCheck = queenProperties.gameCheck(chessBoardMap, posX, posY);
+					kingCheck = queenProperties.gameCheck(chessBoardMap, posX, posY, BOARD_SIZE);
 
 					if (kingCheck) {
 						break;
@@ -531,7 +531,7 @@ public class HaevinChess extends JFrame {
 
 			if (kingCheck) {
 				pieceBlockCheck();
-				kingProperties.checkKingScanner(chessBoardMap, posX, posY);
+				kingProperties.checkKingScanner(chessBoardMap, posX, posY, BOARD_SIZE);
 				break;
 			}
 		}
@@ -604,7 +604,7 @@ public class HaevinChess extends JFrame {
 		if (!secondClick)
 			selectReset();
 
-		kingProperties.ruleSet(chessBoardMap, charTurnContain, posX, posY, BOARD_SIZE);
+		kingProperties.ruleSet(chessBoardMap, charTurnContain, posX, posY, BOARD_SIZE, castlingDoneP1, castlingDoneP2);
 
 		pieceStoreX = posX;
 		pieceStoreY = posY;
@@ -632,6 +632,10 @@ public class HaevinChess extends JFrame {
 	}
 
 	public void debugConsole() {
+		System.out.println("castling --> " + castling);
+		System.out.println("castlingDoneP1 --> " + castlingDoneP1);
+		System.out.println("castlingDoneP2 --> " + castlingDoneP2);
+		
 		for (int i = 0; i < BOARD_SIZE; i++) {
 			for (int j = 0; j < BOARD_SIZE; j++) {
 				System.out.print(chessBoardMap[i][j] + ", ");

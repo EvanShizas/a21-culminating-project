@@ -1,7 +1,7 @@
 package beta_versions;
 
 public class KingProperties {
-	public void ruleSet(String[][] chessBoardMap, String charTurnContain, int posX, int posY, final int BOARD_SIZE) {
+	public void ruleSet(String[][] chessBoardMap, String charTurnContain, int posX, int posY, final int BOARD_SIZE, boolean castlingDoneP1, boolean castlingDoneP2) {
 		try {
 			if (chessBoardMap[posX + 1][posY].equals("eE") || !chessBoardMap[posX + 1][posY].contains(charTurnContain) && !chessBoardMap[posX + 1][posY].contains("K")) {
 				chessBoardMap[posX + 1][posY] += "s";
@@ -52,12 +52,12 @@ public class KingProperties {
 
 		if (chessBoardMap[posX][posY].equals("wK")) {
 			if (chessBoardMap[BOARD_SIZE - 1][0].equals("wR") && chessBoardMap[BOARD_SIZE - 1][1].equals("eE") && chessBoardMap[BOARD_SIZE - 1][2].equals("eE") && chessBoardMap[BOARD_SIZE - 1][3].equals("eEs") 
-					&& chessBoardMap[BOARD_SIZE - 1][4].equals("wK")) {
+					&& chessBoardMap[BOARD_SIZE - 1][4].equals("wK") && !castlingDoneP1) {
 				chessBoardMap[BOARD_SIZE - 1][2] += "sR";
 			}
 
 			else if (chessBoardMap[BOARD_SIZE - 1][BOARD_SIZE - 1].equals("wR") && chessBoardMap[BOARD_SIZE - 1][BOARD_SIZE - 2].equals("eE") && chessBoardMap[BOARD_SIZE - 1][BOARD_SIZE - 3].equals("eEs") 
-					&& chessBoardMap[BOARD_SIZE - 1][4].equals("wK")) {
+					&& chessBoardMap[BOARD_SIZE - 1][4].equals("wK") && !castlingDoneP2) {
 				chessBoardMap[BOARD_SIZE - 1][6] += "sR";
 			}
 		}
@@ -74,10 +74,10 @@ public class KingProperties {
 			}
 		}
 
-		checkKingScanner(chessBoardMap, posX, posY);
+		checkKingScanner(chessBoardMap, posX, posY, BOARD_SIZE);
 	}
 	
-	public void checkKingScanner(String[][] chessBoardMap, int posX, int posY) { // Checks if king(s) are in check, and what spots are danger/check spots...
+	public void checkKingScanner(String[][] chessBoardMap, int posX, int posY, final int BOARD_SIZE) { // Checks if king(s) are in check, and what spots are danger/check spots...
 		// TODO -> remove selected spots that will put the king in check by changing the chessBoardMap[][] values.
 		
 	}

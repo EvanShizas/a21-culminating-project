@@ -65,60 +65,52 @@ public class RookProperties {
 
 	public boolean gameCheck(String[][] chessBoardMap, int posX, int posY, final int BOARD_SIZE) {
 		if (chessBoardMap[posX][posY].equals("wR")) {
-			for (int i = 0; i < posX; i++) {
+			for (int i = posX + 1; i < BOARD_SIZE; i++) {
 				if (chessBoardMap[i][posY].contains("bK")) {
-					System.out.println("true1");
 					return true;
 				}
 			}
 
-			for (int i = posX; i < BOARD_SIZE-1; i++) {
+			for (int i = posX - 1; i > -1; i--) {
 				if (chessBoardMap[i][posY].contains("bK")) {
-					System.out.println("true2");
 					return true;
 				}
 			}
 
-			for (int i = 0; i < posY; i++) {
-				if (chessBoardMap[posX][i].contains("bK")) {
-					System.out.println("true3");
+			for (int i = posY + 1; i < BOARD_SIZE; i++) {
+				if (chessBoardMap[i][posY].contains("bK")) {
 					return true;
 				}
 			}
 
-			for (int i = posY; i < BOARD_SIZE-1; i++) {
-				if (chessBoardMap[posX][i].contains("bK")) {
-					System.out.println("true4");
+			for (int i = posY - 1; i > -1; i--) {
+				if (chessBoardMap[i][posY].contains("bK")) {
 					return true;
 				}
 			}
 		}
 
 		if (chessBoardMap[posX][posY].equals("bR")) {
-			for (int i = 0; i < posX; i++) {
+			for (int i = posX + 1; i < BOARD_SIZE; i++) {
 				if (chessBoardMap[i][posY].contains("wK")) {
-					System.out.println("true5");
 					return true;
 				}
 			}
 
-			for (int i = posX; i < BOARD_SIZE-1; i++) {
+			for (int i = posX - 1; i > -1; i--) {
 				if (chessBoardMap[i][posY].contains("wK")) {
-					System.out.println("true6");
 					return true;
 				}
 			}
 
-			for (int i = 0; i < posY; i++) {
-				if (chessBoardMap[posX][i].contains("wK")) {
-					System.out.println("true7");
+			for (int i = posY + 1; i < BOARD_SIZE; i++) {
+				if (chessBoardMap[i][posY].contains("wK")) {
 					return true;
 				}
 			}
 
-			for (int i = posY; i < BOARD_SIZE-1; i++) {
-				if (chessBoardMap[posX][i].contains("wK")) {
-					System.out.println("true8");
+			for (int i = posY - 1; i > -1; i--) {
+				if (chessBoardMap[i][posY].contains("wK")) {
 					return true;
 				}
 			}

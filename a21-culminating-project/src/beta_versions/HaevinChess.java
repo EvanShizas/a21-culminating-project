@@ -9,7 +9,7 @@ package beta_versions;
  * @author      Alvin Chan
  * @author      Hammad Hassan
  * @author      Evan Shizas
- * @version     0.3.0
+ * @version     0.4.0
  * @see         A21 - Culminating Project
  */
 
@@ -97,7 +97,7 @@ public class HaevinChess extends JFrame {
 
 	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
-	final String VERSION = "v0.3.0 - (beta)";
+	final String VERSION = "v0.4.0 - (beta)";
 	final int BOARD_SIZE = 8, WIDTH = (int)screenSize.getWidth(), HEIGHT = (int)screenSize.getHeight();
 	final Color BROWN = new Color(185, 122, 87), WHITE = new Color(255, 255, 255);
 

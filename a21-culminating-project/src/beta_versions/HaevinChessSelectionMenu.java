@@ -16,17 +16,15 @@ import javax.swing.border.EmptyBorder;
 public class HaevinChessSelectionMenu extends JFrame {
 
 	private JPanel contentPane;
-	private JButton singlePlayer;
-	private JButton multiPlayer;
+	private JButton startGame;
 	private JButton goBack;
 	private JTextArea textArea;
 	private JLabel title;
-	private JLabel select;
 	private JLabel settings;
 	private JLabel version;
 	private JLabel fileViewLbl;
 
-	final String VERSION = "v0.3.0 - (beta)";
+	final String VERSION = "v0.4.0 - (beta)";
 	
 	ImageIcon winIcon = new ImageIcon("assets//images//window-icon.png");
 	ImageIcon background = new ImageIcon("assets//images//menu-background.jpg");
@@ -65,41 +63,25 @@ public class HaevinChessSelectionMenu extends JFrame {
 		fileViewLbl.setBounds(381, 640, 197, 14);
 		contentPane.add(fileViewLbl);
 
-		select = new JLabel("Select Game Mode:");
-		select.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		select.setBackground(Color.WHITE);
-		select.setBounds(10, 80, 428, 37);
-		contentPane.add(select);
-
 		settings = new JLabel("Settings:");
 		settings.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		settings.setBackground(Color.WHITE);
-		settings.setBounds(10, 252, 428, 37);
+		settings.setBounds(10, 170, 428, 37);
 		contentPane.add(settings);
 
-		singlePlayer = new JButton("Single Player");
-		singlePlayer.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		singlePlayer.setBounds(139, 128, 310, 51);
-		contentPane.add(singlePlayer);
-		singlePlayer.addActionListener(new java.awt.event.ActionListener() {
+		startGame = new JButton("Start Game");
+		startGame.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		startGame.setBounds(139, 100, 310, 51);
+		contentPane.add(startGame);
+		startGame.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				singlePlayerActionPerformed(evt);
 			}
 		});
 
-		multiPlayer = new JButton("Multiplayer");
-		multiPlayer.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		multiPlayer.setBounds(139, 190, 310, 51);
-		contentPane.add(multiPlayer);
-		multiPlayer.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				multiPlayerActionPerformed(evt);
-			}
-		});
-
 		textArea = new JTextArea();
 		textArea.setBackground(Color.GRAY);
-		textArea.setBounds(10, 300, 568, 329);
+		textArea.setBounds(10, 218, 568, 411);
 		contentPane.add(textArea);
 
 		goBack = new JButton("<");
@@ -113,12 +95,6 @@ public class HaevinChessSelectionMenu extends JFrame {
 	}
 
 	public void singlePlayerActionPerformed(java.awt.event.ActionEvent evt) {
-		HaevinChess frame = new HaevinChess();
-		frame.setVisible(true);
-		setVisible(false);
-	}
-	
-	public void multiPlayerActionPerformed(java.awt.event.ActionEvent evt) {
 		HaevinChess frame = new HaevinChess();
 		frame.setVisible(true);
 		setVisible(false);

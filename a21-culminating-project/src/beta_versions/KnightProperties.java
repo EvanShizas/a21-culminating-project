@@ -52,6 +52,105 @@ public class KnightProperties {
 	}
 	
 	public boolean gameCheck(String[][] chessBoardMap, int posX, int posY) {
+		if (chessBoardMap[posX][posY].equals("wN")) {
+			try {
+				if (chessBoardMap[posX + 2][posY + 1].contains("bK")) {
+					return true;
+				}
+			} catch (Exception e) {}
+
+			try {
+				if (chessBoardMap[posX + 2][posY - 1].contains("bK")) {
+					return true;
+				}
+			} catch (Exception e) {}
+
+			try {
+				if (chessBoardMap[posX - 2][posY + 1].contains("bK")) {
+					return true;
+				}
+			} catch (Exception e) {}
+
+			try {
+				if (chessBoardMap[posX - 2][posY - 1].contains("bK")) {
+					return true;
+				}
+			} catch (Exception e) {}
+
+			try {
+				if (chessBoardMap[posX + 1][posY + 2].contains("bK")) {
+					return true;
+				}
+			} catch (Exception e) {}
+
+			try {
+				if (chessBoardMap[posX + 1][posY - 2].contains("bK")) {
+					return true;
+				}
+			} catch (Exception e) {}
+
+			try {
+				if (chessBoardMap[posX - 1][posY + 2].contains("bK")) {
+					return true;
+				}
+			} catch (Exception e) {}
+
+			try {
+				if (chessBoardMap[posX - 1][posY - 2].contains("bK")) {
+					return true;
+				}
+			} catch (Exception e) {}
+		}
+		
+		if (chessBoardMap[posX][posY].equals("bN")) {
+			try {
+				if (chessBoardMap[posX + 2][posY + 1].contains("wK")) {
+					return true;
+				}
+			} catch (Exception e) {}
+
+			try {
+				if (chessBoardMap[posX + 2][posY - 1].contains("wK")) {
+					return true;
+				}
+			} catch (Exception e) {}
+
+			try {
+				if (chessBoardMap[posX - 2][posY + 1].contains("wK")) {
+					return true;
+				}
+			} catch (Exception e) {}
+
+			try {
+				if (chessBoardMap[posX - 2][posY - 1].contains("wK")) {
+					return true;
+				}
+			} catch (Exception e) {}
+
+			try {
+				if (chessBoardMap[posX + 1][posY + 2].contains("wK")) {
+					return true;
+				}
+			} catch (Exception e) {}
+
+			try {
+				if (chessBoardMap[posX + 1][posY - 2].contains("wK")) {
+					return true;
+				}
+			} catch (Exception e) {}
+
+			try {
+				if (chessBoardMap[posX - 1][posY + 2].contains("wK")) {
+					return true;
+				}
+			} catch (Exception e) {}
+
+			try {
+				if (chessBoardMap[posX - 1][posY - 2].contains("wK")) {
+					return true;
+				}
+			} catch (Exception e) {}
+		}
 		return false;
 	}
 	

@@ -1,11 +1,9 @@
 package beta_versions;
 
 public class QueenProperties {
-	final int BOARD_SIZE = 8;
-	
 	public void ruleSet(String[][] chessBoardMap, String charTurnContain, int posX, int posY, final int BOARD_SIZE) {
 		int j = 0;
-		
+
 		try {
 			j = posY + 1;
 
@@ -150,8 +148,8 @@ public class QueenProperties {
 			}
 		}
 	}
-	
-	public boolean gameCheck(String[][] chessBoardMap, int posX, int posY) {
+
+	public boolean gameCheck(String[][] chessBoardMap, int posX, int posY, final int BOARD_SIZE) {
 		int j = 0;
 
 		if (chessBoardMap[posX][posY].equals("wQ")) {
@@ -194,7 +192,7 @@ public class QueenProperties {
 					j--;
 				}
 			} catch (Exception e) {}
-			
+
 			for (int i = posX + 1; i < BOARD_SIZE; i++) {
 				if (chessBoardMap[i][posY].contains("bK")) {
 					return true;
@@ -260,7 +258,7 @@ public class QueenProperties {
 					j--;
 				}
 			} catch (Exception e) {}
-			
+
 			for (int i = posX + 1; i < BOARD_SIZE; i++) {
 				if (chessBoardMap[i][posY].contains("wK")) {
 					return true;
@@ -287,8 +285,8 @@ public class QueenProperties {
 		}
 		return false;
 	}
-	
+
 	public void pieceBlockCheck(String[][] chessBoardMap, int posX, int posY, final int BOARD_SIZE) {
-		
+
 	}
 }

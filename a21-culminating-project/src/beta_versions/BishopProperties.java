@@ -1,11 +1,9 @@
 package beta_versions;
 
 public class BishopProperties {
-	final int BOARD_SIZE = 8;
-	
 	public void ruleSet(String[][] chessBoardMap, String charTurnContain, int posX, int posY, final int BOARD_SIZE) {
 		int j = 0;
-		
+
 		try {
 			j = posY + 1;
 
@@ -90,10 +88,10 @@ public class BishopProperties {
 			}
 		} catch (Exception e) {}
 	}
-	
-	public boolean gameCheck(String[][] chessBoardMap, int posX, int posY) {
+
+	public boolean gameCheck(String[][] chessBoardMap, int posX, int posY, final int BOARD_SIZE) {
 		int j = 0;
-		
+
 		if (chessBoardMap[posX][posY].equals("wB")) {
 			try {
 				j = posY + 1;
@@ -135,7 +133,7 @@ public class BishopProperties {
 				}
 			} catch (Exception e) {}
 		}
-		
+
 		if (chessBoardMap[posX][posY].equals("bB")) {
 			try {
 				j = posY + 1;
@@ -179,8 +177,8 @@ public class BishopProperties {
 		}
 		return false;
 	}
-	
+
 	public void pieceBlockCheck(String[][] chessBoardMap, int posX, int posY, final int BOARD_SIZE) {
-		
+
 	}
 }

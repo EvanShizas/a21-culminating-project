@@ -55,7 +55,7 @@ public class PawnProperties {
 		}
 	}
 	
-	public boolean gameCheck(String[][] chessBoardMap, int posX, int posY) {
+	public boolean gameCheck(String[][] chessBoardMap, int posX, int posY, final int BOARD_SIZE) {
 		if (chessBoardMap[posX][posY].equals("wP")) {
 			try {
 				if (chessBoardMap[posX - 1][posY + 1].contains("bK")) {

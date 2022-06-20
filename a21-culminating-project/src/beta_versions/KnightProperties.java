@@ -51,7 +51,54 @@ public class KnightProperties {
 		} catch (Exception e) {}
 	}
 	
-	public boolean gameCheck(String[][] chessBoardMap, int posX, int posY, final int BOARD_SIZE) {
+	public boolean gameCheck(String[][] chessBoardMap, int posX, int posY, final int BOARD_SIZE, String charTurnContain) {
+		try {
+			if (chessBoardMap[posX + 2][posY + 1].contains(charTurnContain + "K")) {
+				return true;
+			}
+		} catch (Exception e) {}
+
+		try {
+			if (chessBoardMap[posX + 2][posY - 1].contains(charTurnContain + "K")) {
+				return true;			}
+		} catch (Exception e) {}
+
+		try {
+			if (chessBoardMap[posX - 2][posY + 1].contains(charTurnContain + "K")) {
+				return true;
+			}
+		} catch (Exception e) {}
+
+		try {
+			if (chessBoardMap[posX - 2][posY - 1].contains(charTurnContain + "K")) {
+				return true;
+			}
+		} catch (Exception e) {}
+
+		try {
+			if (chessBoardMap[posX + 1][posY + 2].contains(charTurnContain + "K")) {
+				return true;
+			}
+		} catch (Exception e) {}
+
+		try {
+			if (chessBoardMap[posX + 1][posY - 2].contains(charTurnContain + "K")) {
+				return true;
+			}
+		} catch (Exception e) {}
+
+		try {
+			if (chessBoardMap[posX - 1][posY + 2].contains(charTurnContain + "K")) {
+				return true;
+			}
+		} catch (Exception e) {}
+
+		try {
+			if (chessBoardMap[posX - 1][posY - 2].contains(charTurnContain + "K")) {
+				return true;
+			}
+		} catch (Exception e) {}
+		
 		return false;
 	}
 	

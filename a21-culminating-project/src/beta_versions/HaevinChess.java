@@ -354,7 +354,8 @@ public class HaevinChess extends JFrame {
 
 	public void gameAction() { // When board button is pressed...
 		ruleSetSelect();
-
+		pawnProperties.promotion(chessBoardMap, BOARD_SIZE);
+		
 		if (kingCheck) { // If king is in check
 			if (!secondPlayer) {
 				switch (chessBoardMap[posX][posY]) {
@@ -434,6 +435,7 @@ public class HaevinChess extends JFrame {
 			checkGameScanner();
 		}
 
+		pawnProperties.promotion(chessBoardMap, BOARD_SIZE);
 		boardImageLoad();
 	}
 
@@ -505,7 +507,7 @@ public class HaevinChess extends JFrame {
 				}
 
 				if (chessBoardMap[i][j].contains("N")) {
-					kingCheck = knightProperties.gameCheck(chessBoardMap, posX, posY, BOARD_SIZE);
+					kingCheck = knightProperties.gameCheck(chessBoardMap, posX, posY, BOARD_SIZE, charTurnContain);
 
 					if (kingCheck) {
 						break;
@@ -550,7 +552,7 @@ public class HaevinChess extends JFrame {
 			selectReset();
 
 		pawnProperties.ruleSet(chessBoardMap, charTurnContain, posX, posY, BOARD_SIZE);
-
+		
 		pieceStoreX = posX;
 		pieceStoreY = posY;
 		pieceStore = chessBoardMap[posX][posY];

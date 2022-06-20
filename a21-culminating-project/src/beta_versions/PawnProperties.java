@@ -90,4 +90,19 @@ public class PawnProperties {
 	public void pieceBlockCheck(String[][] chessBoardMap, int posX, int posY, final int BOARD_SIZE) {
 		
 	}
+	
+	public void promotion(String[][] chessBoardMap, final int BOARD_SIZE) {
+		for (int i = 0; i < BOARD_SIZE; i++) {
+			if (chessBoardMap[0][i].contains("wP")) {
+				chessBoardMap[0][i] = "wQ";
+				System.out.println("h");
+			} 
+			
+			if (chessBoardMap[7][i].contains("bP")) {
+				chessBoardMap[7][i] = "bQ";
+			}
+			
+			System.out.println("p");
+		}
+	}
 }

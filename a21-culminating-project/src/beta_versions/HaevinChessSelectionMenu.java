@@ -25,7 +25,7 @@ public class HaevinChessSelectionMenu extends JFrame {
 	private JLabel version;
 	private JLabel fileViewLbl;
 
-	final String VERSION = "v0.6.0 - (beta)";
+	final String VERSION = "v0.7.0 - (beta)";
 	
 	ImageIcon winIcon = new ImageIcon("assets/images/window-icon.png");
 	ImageIcon background = new ImageIcon("assets/images/menu-background.jpg");

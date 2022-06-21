@@ -3,13 +3,13 @@ package beta_versions;
 /**
  * Haevin Chess. A game of Chess with a twist!
  * 
- * modified     20220618
+ * modified     20220620
  * date         20220531
  * @filename    HaevinChess.java
  * @author      Alvin Chan
  * @author      Hammad Hassan
  * @author      Evan Shizas
- * @version     0.6.0
+ * @version     0.7.0
  * @see         A21 - Culminating Project
  */
 
@@ -36,6 +36,8 @@ package beta_versions;
  * 	Tuned up the properties files for all the pieces to prevent errors. (06/19/2022 -> Evan)
  * 
  * 	Got king check and checkmate system fully working. (06/20/2022 -> Evan & Alvin)
+ * 
+ * 	Applied program theme (06/20/2022 -> Evan & Hammad)
  */
 
 /** Developer Notes:
@@ -101,7 +103,7 @@ public class HaevinChess extends JFrame {
 
 	ActionEvent f;
 
-	final String VERSION = "v0.6.0 - (beta)";
+	final String VERSION = "v0.7.0 - (beta)";
 	final int BOARD_SIZE = 8, WIDTH = (int)screenSize.getWidth(), HEIGHT = (int)screenSize.getHeight();
 	final Color BROWN = new Color(185, 122, 87), WHITE = new Color(255, 255, 255);
 
@@ -115,7 +117,7 @@ public class HaevinChess extends JFrame {
 	ImageIcon background = new ImageIcon("assets/images/menu-background.jpg");
 	ImageIcon whiteKing = new ImageIcon("assets/images/white-king.png");
 	ImageIcon blackKing = new ImageIcon("assets/images/black-king.png");
-	ImageIcon instructionsImg = new ImageIcon("assets/images/instructions");
+	ImageIcon instructionsImg = new ImageIcon("assets/images/instructions.png");
 
 	String[][] chessBoardMap = new String[BOARD_SIZE][BOARD_SIZE];
 	JButton[][] chessBoard = new JButton[BOARD_SIZE][BOARD_SIZE];
@@ -142,37 +144,45 @@ public class HaevinChess extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(10, 10, 1475, 750);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(204, 153, 102));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 
 		northPanel = new JPanel();
+		northPanel.setBackground(new Color(204, 153, 102));
 		contentPane.add(northPanel, BorderLayout.NORTH);
 
 		southPanel = new JPanel();
+		southPanel.setBackground(new Color(204, 153, 102));
 		contentPane.add(southPanel, BorderLayout.SOUTH);
 
 		eastPanel = new JPanel();
+		eastPanel.setBackground(new Color(204, 153, 102));
 		eastPanel.setBorder(new EmptyBorder(5, (int) winChange, 5, 5));
 		contentPane.add(eastPanel, BorderLayout.EAST);
 
 		westPanel = new JPanel();
+		westPanel.setBackground(new Color(204, 153, 102));
 		westPanel.setBorder(new EmptyBorder(5, (int) winChange, 5, 5));
 		contentPane.add(westPanel, BorderLayout.WEST);
 
 		centrePanel = new JPanel();
+		centrePanel.setBackground(new Color(204, 153, 102));
 		contentPane.add(centrePanel, BorderLayout.CENTER);
 		centrePanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		centrePanel.setLayout(new GridLayout(0, 8, 0, 0));
 
 		title = new JLabel("Haevin Chess");
 		title.setHorizontalAlignment(SwingConstants.CENTER);
-		title.setForeground(Color.BLUE);
+		title.setForeground(new Color(204, 51, 51));
 		title.setFont(new Font("Tahoma", Font.BOLD, 45));
 		title.setBackground(Color.WHITE);
 		title.setBounds(0, 0, 588, 90);
 
 		stats = new JButton("Stats");
+		stats.setBackground((new Color(101, 67, 33)));;
+		stats.setForeground(Color.WHITE);
 		stats.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				statsActionPerformed(evt);
@@ -180,6 +190,8 @@ public class HaevinChess extends JFrame {
 		});
 
 		instructions = new JButton("Instructions");
+		instructions.setBackground((new Color(101, 67, 33)));;
+		instructions.setForeground(Color.WHITE);
 		instructions.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				instructionsActionPerformed(evt);
@@ -187,6 +199,8 @@ public class HaevinChess extends JFrame {
 		});
 
 		pause = new JButton("                  Pause                  ");
+		pause.setBackground((new Color(101, 67, 33)));;
+		pause.setForeground(Color.WHITE);
 		pause.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				pauseActionPerformed(evt);
@@ -194,6 +208,8 @@ public class HaevinChess extends JFrame {
 		});
 
 		restart = new JButton("Restart");
+		restart.setBackground((new Color(101, 67, 33)));;
+		restart.setForeground(Color.WHITE);
 		restart.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				restartActionPerformed(evt);
@@ -201,6 +217,8 @@ public class HaevinChess extends JFrame {
 		});
 
 		quit = new JButton("Quit");
+		quit.setBackground((new Color(101, 67, 33)));;
+		quit.setForeground(Color.WHITE);
 		quit.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				quitActionPerformed(evt);

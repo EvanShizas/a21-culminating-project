@@ -9,7 +9,7 @@ package beta_versions;
  * @author      Alvin Chan
  * @author      Hammad Hassan
  * @author      Evan Shizas
- * @version     0.4.0
+ * @version     0.6.0
  * @see         A21 - Culminating Project
  */
 
@@ -32,6 +32,10 @@ package beta_versions;
  * 	in which we will manage variables and other things in the game to prevent the main class file (this one!!) from being too large and hard to manage. (06/18/2022 -> Evan)
  * 
  * 	Added restart functionality to the game. (06/18/2022 -> Evan)
+ * 
+ * 	Tuned up the properties files for all the pieces to prevent errors. (06/19/2022 -> Evan)
+ * 
+ * 	Got king check and checkmate system fully working. (06/20/2022 -> Evan & Alvin)
  */
 
 /** Developer Notes:
@@ -49,7 +53,6 @@ import java.awt.Desktop;
 import java.awt.Dimension;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Graphics;
@@ -69,6 +72,8 @@ import javax.swing.SwingConstants;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JTextArea;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class HaevinChess extends JFrame {
 
@@ -78,18 +83,13 @@ public class HaevinChess extends JFrame {
 	private JPanel southPanel;
 	private JPanel eastPanel;
 	private JPanel westPanel;
-	private JButton play;
 	private JButton instructions;
-	private JButton exit;
-	private JButton singlePlayer;
-	private JButton multiPlayer;
-	private JButton goBack;
 	private JButton stats;
 	private JButton pause;
 	private JButton restart;
 	private JButton quit;
 	private JLabel title;
-	
+
 	PawnProperties pawnProperties = new PawnProperties();
 	RookProperties rookProperties = new RookProperties();
 	KnightProperties knightProperties = new KnightProperties();
@@ -99,19 +99,23 @@ public class HaevinChess extends JFrame {
 
 	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
-	final String VERSION = "v0.4.0 - (beta)";
+	ActionEvent f;
+
+	final String VERSION = "v0.6.0 - (beta)";
 	final int BOARD_SIZE = 8, WIDTH = (int)screenSize.getWidth(), HEIGHT = (int)screenSize.getHeight();
 	final Color BROWN = new Color(185, 122, 87), WHITE = new Color(255, 255, 255);
 
 	int tileNum = 0, name = 0, posX, posY, pieceStoreX = 0, pieceStoreY = 0;
-	double change = (double)((WIDTH-HEIGHT)/2);
-	boolean pieceBlockCheckSelect = false, checkMate = false, kingCheck = false, castling = false, castlingDoneP1 = false, castlingDoneP2 = false, secondClick = false, secondPlayer = false;
-	boolean whiteKingExists = false, blackKingExists = false;
-	
+	double winChange = (double)((WIDTH-HEIGHT)/2);
+	boolean castling = false, castlingDoneP1 = false, castlingDoneP2 = false, secondClick = false, secondPlayer = false, whiteKingExists = false, blackKingExists = false, stalemate = false;
+
 	String pieceStore = "", charTurnContain = "";
 
-	ImageIcon winIcon = new ImageIcon("assets//images//window-icon.png");
-	ImageIcon background = new ImageIcon("assets//images//menu-background.jpg");
+	ImageIcon winIcon = new ImageIcon("assets/images/window-icon.png");
+	ImageIcon background = new ImageIcon("assets/images/menu-background.jpg");
+	ImageIcon whiteKing = new ImageIcon("assets/images/white-king.png");
+	ImageIcon blackKing = new ImageIcon("assets/images/black-king.png");
+	ImageIcon instructionsImg = new ImageIcon("assets/images/instructions");
 
 	String[][] chessBoardMap = new String[BOARD_SIZE][BOARD_SIZE];
 	JButton[][] chessBoard = new JButton[BOARD_SIZE][BOARD_SIZE];
@@ -149,11 +153,11 @@ public class HaevinChess extends JFrame {
 		contentPane.add(southPanel, BorderLayout.SOUTH);
 
 		eastPanel = new JPanel();
-		eastPanel.setBorder(new EmptyBorder(5, (int) change, 5, 5));
+		eastPanel.setBorder(new EmptyBorder(5, (int) winChange, 5, 5));
 		contentPane.add(eastPanel, BorderLayout.EAST);
 
 		westPanel = new JPanel();
-		westPanel.setBorder(new EmptyBorder(5, (int) change, 5, 5));
+		westPanel.setBorder(new EmptyBorder(5, (int) winChange, 5, 5));
 		contentPane.add(westPanel, BorderLayout.WEST);
 
 		centrePanel = new JPanel();
@@ -320,27 +324,47 @@ public class HaevinChess extends JFrame {
 	}
 
 	public void pauseActionPerformed(java.awt.event.ActionEvent evt) {
-		
+		JOptionPane.showMessageDialog(null,"Game Paused!\n\nPress (OK) to RESUME.\n\n","PAUSE",JOptionPane.INFORMATION_MESSAGE, winIcon);
 	}
 
 	public void instructionsActionPerformed(java.awt.event.ActionEvent evt) {
-		
+		JOptionPane.showMessageDialog(null,"","Instructions",JOptionPane.INFORMATION_MESSAGE, instructionsImg);
 	}
 
 	public void statsActionPerformed(java.awt.event.ActionEvent evt) {
-		
+		JOptionPane.showMessageDialog(null,"<html><font color = blue size = 16>Chess Game Stats</font></html>\n\n","Game Stats",JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	public void restartActionPerformed(java.awt.event.ActionEvent evt) {
-		HaevinChess frame = new HaevinChess();
-		frame.setVisible(true);
-		setVisible(false);
+		int confirmOption = JOptionPane.showConfirmDialog (null, "Wish to start a new game?\n\n[Yes] --> New Game...\n[No] --> Continue Game...","NEW GAME...", JOptionPane.YES_NO_OPTION);
+
+		if (confirmOption == JOptionPane.YES_OPTION) {
+			int confirmResetOption = JOptionPane.showConfirmDialog (null, "Wish to reset all progress and scores?\n\nWARNING: THIS ACTION CANNOT BE UNDONE!","RESET WARNING", JOptionPane.YES_NO_OPTION);
+
+			if (confirmResetOption == JOptionPane.YES_OPTION) {
+				// TODO wipe save stats text file...
+			}
+
+			HaevinChess frame = new HaevinChess();
+			frame.setVisible(true);
+			setVisible(false);
+		}
 	}
 
 	public void quitActionPerformed(java.awt.event.ActionEvent evt) {
-		HaevinChessMainMenu frame = new HaevinChessMainMenu();
-		frame.setVisible(true);
-		setVisible(false);
+		int confirmOption = JOptionPane.showConfirmDialog (null, "Wish to quit the game?\n\n[Yes] --> Main Menu...\n[No] --> Continue Game...","QUIT GAME...", JOptionPane.YES_NO_OPTION);
+
+		if (confirmOption == JOptionPane.YES_OPTION) {
+			int confirmResetOption = JOptionPane.showConfirmDialog (null, "Wish to reset all progress and scores?\n\nWARNING: THIS ACTION CANNOT BE UNDONE!","RESET WARNING", JOptionPane.YES_NO_OPTION);
+
+			if (confirmResetOption == JOptionPane.YES_OPTION) {
+				// TODO wipe save stats text file...
+			}
+
+			HaevinChessMainMenu frame = new HaevinChessMainMenu();
+			frame.setVisible(true);
+			setVisible(false);
+		}
 	}
 
 	public void boardImageLoad() {
@@ -358,36 +382,10 @@ public class HaevinChess extends JFrame {
 	public void gameAction() { // When board button is pressed...
 		whiteKingExists = false;
 		blackKingExists = false;
-		
+		stalemate = true;
+
 		ruleSetSelect();
 		pawnProperties.promotion(chessBoardMap, BOARD_SIZE);
-		
-		if (kingCheck) { // If king is in check
-			if (!secondPlayer) {
-				switch (chessBoardMap[posX][posY]) {
-				case "wK":
-					kingRuleSet();
-					break;
-				default:
-					kingCheck = true;
-				}
-			}
-
-			else {
-				switch (chessBoardMap[posX][posY]) {
-				case "bK":
-					kingRuleSet();
-					break;
-				default:
-					kingCheck = true;
-				}
-			}
-
-			if (chessBoardMap[posX][posY].contains("Z")) {
-				chessBoardMap[posX][posY] = chessBoardMap[posX][posY].replaceAll("Z", "");
-				pieceBlockCheckSelect = true;
-			}
-		}
 
 		if (secondClick) { // Done when a piece is already selected and is to be moved...
 			chessBoardMap[posX][posY] = pieceStore;
@@ -441,36 +439,50 @@ public class HaevinChess extends JFrame {
 		}
 
 		pawnProperties.promotion(chessBoardMap, BOARD_SIZE);
+
 		boardImageLoad();
-		
+
+		// King checker...
 		for (int i = 0; i < BOARD_SIZE; i++) {
 			for (int j = 0; j < BOARD_SIZE; j++) {
 				if (chessBoardMap[i][j].contains("bK")) {
 					blackKingExists = true;
-				} else if (!chessBoardMap[i][j].contains("wK")) {
+				} 
+
+				else if (chessBoardMap[i][j].contains("wK")) {
 					whiteKingExists = true;
 				}
 			}
 		}
-		
-		if (!blackKingExists) {
-			JOptionPane.showMessageDialog(contentPane, "White won.");
-			
-			HaevinChess frame = new HaevinChess();
-			frame.setVisible(true);
-			setVisible(false);
-		} else if (!whiteKingExists) {
-			JOptionPane.showMessageDialog(contentPane, "Black won.");
-			
-			HaevinChess frame = new HaevinChess();
-			frame.setVisible(true);
-			setVisible(false);
+
+		// Stalemate checker...
+		for (int i = 0; i < BOARD_SIZE; i++) {
+			for (int j = 0; j < BOARD_SIZE; j++) {
+				if (chessBoardMap[i][j].contains("P") || chessBoardMap[i][j].contains("R") || chessBoardMap[i][j].contains("N") || chessBoardMap[i][j].contains("B") || chessBoardMap[i][j].contains("Q")) {
+					stalemate = false;
+					break;
+				}
+			}
 		}
-		
+
+		if (!blackKingExists) {
+			JOptionPane.showMessageDialog(null,"Game Over!\n\nWhite Wins!","Game Information",JOptionPane.INFORMATION_MESSAGE, whiteKing);
+			restartActionPerformed(f);
+		} 
+
+		else if (!whiteKingExists) {
+			JOptionPane.showMessageDialog(null,"Game Over!\n\nBlack Wins!","Game Information",JOptionPane.INFORMATION_MESSAGE, blackKing);
+			restartActionPerformed(f);
+		}
+
+		if (stalemate) {
+			JOptionPane.showMessageDialog(null,"Game Over!\n\nNeither player wins...","Game Information",JOptionPane.INFORMATION_MESSAGE, winIcon);
+			restartActionPerformed(f);
+		}
 	}
 
 	public void ruleSetSelect() {
-		if (!secondPlayer && !kingCheck || pieceBlockCheckSelect) { // First player
+		if (!secondPlayer) { // First player
 			switch (chessBoardMap[posX][posY]) {
 			case "wK":
 				kingRuleSet();
@@ -493,7 +505,7 @@ public class HaevinChess extends JFrame {
 			}
 		}
 
-		else if (!kingCheck || pieceBlockCheckSelect) { // Second player
+		else { // Second player
 			switch (chessBoardMap[posX][posY]) {
 			case "bK":
 				kingRuleSet();
@@ -517,20 +529,12 @@ public class HaevinChess extends JFrame {
 		}
 	}
 
-	public void pieceBlockCheck() { // Checks if certain pieces can block checks. Gives a "Z" designation in name if true.
-		pawnProperties.pieceBlockCheck(chessBoardMap, posX, posY, BOARD_SIZE);
-		rookProperties.pieceBlockCheck(chessBoardMap, posX, posY, BOARD_SIZE);
-		knightProperties.pieceBlockCheck(chessBoardMap, posX, posY, BOARD_SIZE);
-		bishopProperties.pieceBlockCheck(chessBoardMap, posX, posY, BOARD_SIZE);
-		queenProperties.pieceBlockCheck(chessBoardMap, posX, posY, BOARD_SIZE);
-	}
-
 	public void pawnRuleSet() {
 		if (!secondClick)
 			selectReset();
 
 		pawnProperties.ruleSet(chessBoardMap, charTurnContain, posX, posY, BOARD_SIZE);
-		
+
 		pieceStoreX = posX;
 		pieceStoreY = posY;
 		pieceStore = chessBoardMap[posX][posY];
@@ -601,10 +605,6 @@ public class HaevinChess extends JFrame {
 				if (chessBoardMap[i][j].contains("s")) {
 					chessBoardMap[i][j] = chessBoardMap[i][j].replaceAll("s", "");
 				}
-
-				if (chessBoardMap[i][j].contains("B")) {
-					chessBoardMap[i][j] = chessBoardMap[i][j].replaceAll("Z", "");
-				}
 			}
 		}
 
@@ -612,10 +612,6 @@ public class HaevinChess extends JFrame {
 	}
 
 	public void debugConsole() {
-		System.out.println("castling --> " + castling);
-		System.out.println("castlingDoneP1 --> " + castlingDoneP1);
-		System.out.println("castlingDoneP2 --> " + castlingDoneP2);
-		
 		for (int i = 0; i < BOARD_SIZE; i++) {
 			for (int j = 0; j < BOARD_SIZE; j++) {
 				System.out.print(chessBoardMap[i][j] + ", ");

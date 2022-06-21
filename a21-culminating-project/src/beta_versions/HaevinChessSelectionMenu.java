@@ -17,6 +17,7 @@ public class HaevinChessSelectionMenu extends JFrame {
 
 	private JPanel contentPane;
 	private JButton startGame;
+	private JButton multiPlayer;
 	private JButton goBack;
 	private JTextArea textArea;
 	private JLabel title;
@@ -26,8 +27,8 @@ public class HaevinChessSelectionMenu extends JFrame {
 
 	final String VERSION = "v0.6.0 - (beta)";
 	
-	ImageIcon winIcon = new ImageIcon("assets//images//window-icon.png");
-	ImageIcon background = new ImageIcon("assets//images//menu-background.jpg");
+	ImageIcon winIcon = new ImageIcon("assets/images/window-icon.png");
+	ImageIcon background = new ImageIcon("assets/images/menu-background.jpg");
 
 	public HaevinChessSelectionMenu() {
 		setResizable(false);
@@ -37,14 +38,14 @@ public class HaevinChessSelectionMenu extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 600, 700);
 		contentPane = new JPanel();
-		contentPane.setBackground(Color.WHITE);
+		contentPane.setBackground(new Color(204, 153, 102));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		title = new JLabel("Haevin Chess");
 		title.setHorizontalAlignment(SwingConstants.CENTER);
-		title.setForeground(Color.BLUE);
+		title.setForeground(new Color(204, 51, 51));
 		title.setFont(new Font("Tahoma", Font.BOLD, 45));
 		title.setBackground(Color.WHITE);
 		title.setBounds(0, 0, 588, 90);
@@ -56,13 +57,6 @@ public class HaevinChessSelectionMenu extends JFrame {
 		version.setBounds(10, 640, 84, 14);
 		contentPane.add(version);
 
-		fileViewLbl = new JLabel("HaevinChessSelectionMenu.java");
-		fileViewLbl.setFont(new Font("Tahoma", Font.ITALIC, 9));
-		fileViewLbl.setBackground(Color.WHITE);
-		fileViewLbl.setHorizontalAlignment(SwingConstants.TRAILING);
-		fileViewLbl.setBounds(381, 640, 197, 14);
-		contentPane.add(fileViewLbl);
-
 		settings = new JLabel("Settings:");
 		settings.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		settings.setBackground(Color.WHITE);
@@ -73,9 +67,13 @@ public class HaevinChessSelectionMenu extends JFrame {
 		startGame.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		startGame.setBounds(139, 100, 310, 51);
 		contentPane.add(startGame);
+		startGame.setBackground(new Color(101, 67, 33));
+		startGame.setForeground(Color.WHITE);
+		startGame.setFocusPainted(false);
+		startGame.setFont(new Font("Tahoma", Font.BOLD, 16));
 		startGame.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				singlePlayerActionPerformed(evt);
+				startGameActionPerformed(evt);
 			}
 		});
 
@@ -85,7 +83,9 @@ public class HaevinChessSelectionMenu extends JFrame {
 		contentPane.add(textArea);
 
 		goBack = new JButton("<");
+		goBack.setForeground(Color.WHITE);
 		goBack.setBounds(10, 10, 41, 23);
+		goBack.setBackground(new Color(101, 67, 33));
 		contentPane.add(goBack);
 		goBack.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -94,7 +94,13 @@ public class HaevinChessSelectionMenu extends JFrame {
 		});
 	}
 
-	public void singlePlayerActionPerformed(java.awt.event.ActionEvent evt) {
+	public void startGameActionPerformed(java.awt.event.ActionEvent evt) {
+		HaevinChess frame = new HaevinChess();
+		frame.setVisible(true);
+		setVisible(false);
+	}
+	
+	public void multiPlayerActionPerformed(java.awt.event.ActionEvent evt) {
 		HaevinChess frame = new HaevinChess();
 		frame.setVisible(true);
 		setVisible(false);
